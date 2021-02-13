@@ -114,6 +114,27 @@ def game_intro():
         
         pygame.display.update()
         clock.tick(15)
+        
+def computer():
+    """ interaction with a computer """
+    
+    load_map("computer")
+    
+    
+    intro = True
+    while intro:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                
+        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
+        TextSurf, TextRect = text_objects("I am a computer ", largeText)
+        
+        gameDisplay.fill(CONFIG.White)
+        gameDisplay.blit(TextSurf, TextRect)
+        
+        pygame.display.update()
+        clock.tick(15)
 
 def render_map(screen, hero):
         # determine_camera(hero)
@@ -214,7 +235,8 @@ def furniture(file, tilex, tiley, rotation, scalea, scaleb):
 
 clock = pygame.time.Clock()
 def main(a,b):
-    camera=[0,0]
+    
+    # camera=[0,0]
     #where to place car
     x=a
     y=b
@@ -277,7 +299,7 @@ def main(a,b):
              #BEDROOM ---------- DONE
              #computer  22.8, 0.3, 0, 40, 65
                 if keys[pygame.K_x] and x > 22.8*CONFIG.SCALE and y < 0.31*CONFIG.SCALE+65:
-                    game_intro()
+                    computer()
                 else:
                     pass
                 
