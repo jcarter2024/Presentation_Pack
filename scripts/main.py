@@ -93,17 +93,21 @@ def game_intro():
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         largeText2=pygame.font.SysFont ("bitstreamverasans", 30)
         text2=largeText2.render("Lockdown Edition", True, CONFIG.Yellow)
-        text3=largeText2.render("A programme completely compiled in BASH", True, CONFIG.White)
-        
         text2 = pygame.transform.rotate(text2, -30)
+        
+        text3=largeText2.render("A programme developed using GitHub", True, CONFIG.White)
+        text4=largeText2.render("compiled on ARCHER2 using BASH", True, CONFIG.White)
+
+        
         TextSurf, TextRect = text_objects("The Advanced ", largeText)
         TextSurf2, TextRect2 = text_objects("Scripting Workshop", largeText)
         TextRect.center = (display_width/2, display_height/3)
         TextRect2.center = (display_width/2, display_height/3+40)
         gameDisplay.blit(TextSurf, TextRect)
         gameDisplay.blit(TextSurf2, TextRect2)
-        gameDisplay.blit(text2, (display_width*0.7, display_height/7))
+        gameDisplay.blit(text2, (display_width*0.65, display_height/6))
         gameDisplay.blit(text3, (display_width*0.1, display_height/1.2))
+        gameDisplay.blit(text4, (display_width*0.1, display_height/1.1))
         
         button("Enter!", display_width/2-150, 300, 200, 100, CONFIG.Brown, CONFIG.Bright_green, 0)
         button("Quit!", display_width/2, 400, 200, 100, CONFIG.Brown, CONFIG.Bright_red, 1)
@@ -232,7 +236,7 @@ def main():
                 pygame.quit()
             else:
 
-                
+             #KEY COMMANDS   
                 keys=pygame.key.get_pressed()    
                 if keys[pygame.K_LEFT]:
                     x_change=-5
@@ -245,15 +249,39 @@ def main():
                 else:
                     x_change=0 
                     y_change=0
+                    
+             #LOCALISED COMMANDS (OBJECT INTERACTION)
+             
+             #LOUNGE  ----------
+             #Window
+             #Book
+             
+             #KITCHEN ----------
+             #Pool  10, 14.2, 0, 117, 92
+                if keys[pygame.K_x] and 10*CONFIG.SCALE+117 > x > 10*CONFIG.SCALE and 14.2*CONFIG.SCALE < y < 14.2*CONFIG.SCALE+92:
+                    game_intro()
+                else:
+                    pass
+             
+             #BEDROOM ---------- DONE
+             #computer  22.8, 0.3, 0, 40, 65
+                if keys[pygame.K_x] and x > 22.8*CONFIG.SCALE and y < 0.31*CONFIG.SCALE+65:
+                    game_intro()
+                else:
+                    pass
+                
+            #BATHROOM
+            #Bath
+            #Mirror
         
-        # print(int((x+x_change)/CONFIG.SCALE))
-        # print(int((y+y_change)/CONFIG.SCALE))
+        #BOUNDARIES
         if int((x+x_change)) < 0 or int((x+x_change)) > (display_width -1-CONFIG.SCALE):
             x_change=0
     
 
         if int((y+y_change)) < 0 or int((y+y_change)) > (display_height -5-CONFIG.SCALE):
             y_change=0
+            
         # print('x is ' + str(int(((x+x_change)/display_width)*len(map[0]))))
         # print('y is ' +str(int(  ((y+y_change)/display_height)*len(map))))
         # if map[int((y+y_change)/CONFIG.SCALE)][int((x+x_change)/CONFIG.SCALE)] == 'W':
