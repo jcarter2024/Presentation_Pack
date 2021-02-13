@@ -281,9 +281,19 @@ def main(a,b):
                 else:
                     pass
                 
-            #BATHROOM
-            #Bath
-            #Mirror
+            #BATHROOM ---------- DONE
+            #Bath 18.3, 16.7, 0, 35, 50
+                if keys[pygame.K_x] and 18.3*CONFIG.SCALE+35 > x > 18.3*CONFIG.SCALE and 16.7*CONFIG.SCALE < y < 16.7*CONFIG.SCALE+50:
+                    game_intro()
+                else:
+                    pass
+            #Mirror 18.2, 13.3, 0, 34, 54
+                if keys[pygame.K_x] and 18.2*CONFIG.SCALE+34 > x > 18.2*CONFIG.SCALE and 13.3*CONFIG.SCALE < y < 13.3*CONFIG.SCALE+54:
+                    game_intro()
+                else:
+                    pass
+            
+            
         
         #BOUNDARIES
         if int((x+x_change)) < 0 or int((x+x_change)) > (display_width -1-CONFIG.SCALE):
