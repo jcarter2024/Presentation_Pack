@@ -72,6 +72,24 @@ def button(msg,x,y,w,h,inactive, active, a, b, action=None):
     textRect.center = ((x+(w/2), y+(h/2)))
     gameDisplay.blit(textSurf, textRect)
     
+def return_button(msg,x,y,w,h,inactive, active, a, b, action=None):
+    mouse = pygame.mouse.get_pos()
+    click=pygame.mouse.get_pressed()
+    if x+w > mouse[0] > x and y+h > mouse[1] > y:
+        pygame.draw.rect(gameDisplay, active, (x, y, w, h))
+        if click[0] == 1 and action != None:
+            if action == 0:
+                main(a,b)
+            elif action == 1:
+                pygame.quit()
+    else:
+        pygame.draw.rect(gameDisplay, inactive, (x, y, w, h))
+            
+    smallText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 15)
+    textSurf, textRect = text_objects(msg, smallText)
+    textRect.center = ((x+(w/2), y+(h/2)))
+    gameDisplay.blit(textSurf, textRect)
+    
 def game_intro():
     """ Essential for a good start"""
     pygame.mixer.music.play(-1)
@@ -117,9 +135,7 @@ def game_intro():
         
 def computer(initial_x, initial_y):
     """ interaction with a computer """
-    
     load_map("computer")
-    
     
     intro = True
     while intro:
@@ -131,15 +147,17 @@ def computer(initial_x, initial_y):
         TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
         gameDisplay.fill(CONFIG.White)
+        render_map(gameDisplay)
         gameDisplay.blit(TextSurf, TextRect)
         
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
-        button("Return to game", display_width/1.1, 450, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
         
         pygame.display.update()
         clock.tick(15)
+    # print(map)
 
-def render_map(screen, hero):
+def render_map(screen):
         # determine_camera(hero)
         y_pos = 0
         for line in map:
@@ -187,11 +205,11 @@ class Hero:
         self.position[1] = new_position[1]
 
 
-    def render(self, screen, camera):
+    def render(self, screen):
         #self.rect = pygame.Rect(self.position[0]*CONFIG.SCALE, self.position[1]*CONFIG.SCALE-(camera[1]*CONFIG.SCALE),CONFIG.SCALE, CONFIG.SCALE)
         self.rect = pygame.Rect((self.position[0]), (self.position[1]), CONFIG.SCALE, CONFIG.SCALE)
         screen.blit(self.image, self.rect)
-        print(self.rect)
+        
         
         
 def load_image(name):
@@ -221,7 +239,6 @@ class TestSprite(pygame.sprite.Sprite):
         self.index += 1
         if int(self.index/timescale) >= len(self.images):
             self.index = 0
-        print(int(self.index/timescale))
         self.image = self.images[int(self.index/timescale)]
         
         
@@ -238,7 +255,6 @@ def furniture(file, tilex, tiley, rotation, scalea, scaleb):
 
 clock = pygame.time.Clock()
 def main(a,b):
-    
     # camera=[0,0]
     #where to place car
     x=a
@@ -247,7 +263,10 @@ def main(a,b):
     # y = (display_height * 0.8)
     x_change = 0 
     y_change = 0
+    # print(map)
+    map.clear()
     load_map("myfile")
+    # print(map)
     gameExit = False
     hero = Hero(a,b)
     # print(len(map))
@@ -255,14 +274,11 @@ def main(a,b):
     my_group = pygame.sprite.Group(my_sprite)
     
     
-    
     while not gameExit: #GAME LOOP
-        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
             else:
-
              #KEY COMMANDS   
                 keys=pygame.key.get_pressed()    
                 if keys[pygame.K_LEFT]:
@@ -278,7 +294,6 @@ def main(a,b):
                     y_change=0
                     
              #LOCALISED COMMANDS (OBJECT INTERACTION)
-             
              #LOUNGE  ----------
              #Window (2, 0, 0, 33, 27) (3.05, 0, 0, 33, 27)
                 if keys[pygame.K_x] and 3.05*CONFIG.SCALE+27 > x > 2*CONFIG.SCALE and y < 0*CONFIG.SCALE+27:
@@ -302,6 +317,7 @@ def main(a,b):
              #BEDROOM ---------- DONE
              #computer  22.8, 0.3, 0, 40, 65
                 if keys[pygame.K_x] and x > 22.8*CONFIG.SCALE and y < 0.31*CONFIG.SCALE+65:
+                    map.clear()
                     computer(x, y)
                 else:
                     pass
@@ -338,13 +354,11 @@ def main(a,b):
         #         y_change=0
         #         x_change=0  
         # except IndexError:
-        #     pass
-                    
+        #     pass          
         x+=x_change
         y+=y_change
         gameDisplay.fill(CONFIG.Black)
-        render_map(gameDisplay, hero)
-        
+        render_map(gameDisplay)
         
         # ---------  LOUNGE  ------------
         #sofa 1
@@ -384,7 +398,6 @@ def main(a,b):
         furniture("../data/images/lounge/book.png", 6.6, 6.7, 15, 15, 20)
         #tv chair 
         furniture("../data/images/lounge/chair.png", 12.2, 3, 2, 33, 30)
-        
         
         # ---------  OTHER  ------------
         #chairs
@@ -474,12 +487,10 @@ def main(a,b):
         # furniture("../data/topdown-shooter/PNG/Tiles/tile_153.png", 20.5, 9.55,  0,   60, 30)
         
         
-        
-        hero.render(gameDisplay, camera)
+        hero.render(gameDisplay)
         my_group.update()
         my_group.draw(gameDisplay)
         hero.update_position((x, y))
-        print((x,y))
         
         
         
