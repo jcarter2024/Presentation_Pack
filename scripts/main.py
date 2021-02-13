@@ -54,14 +54,14 @@ def text_objects(text, font):
     textSurface=font.render(text, True, CONFIG.Black)
     return textSurface, textSurface.get_rect()
 
-def button(msg,x,y,w,h,inactive, active, action=None):
+def button(msg,x,y,w,h,inactive, active, a, b, action=None):
     mouse = pygame.mouse.get_pos()
     click=pygame.mouse.get_pressed()
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
         pygame.draw.rect(gameDisplay, active, (x, y, w, h))
         if click[0] == 1 and action != None:
             if action == 0:
-                main()
+                main(a,b)
             elif action == 1:
                 pygame.quit()
     else:
@@ -109,8 +109,8 @@ def game_intro():
         gameDisplay.blit(text3, (display_width*0.1, display_height/1.2))
         gameDisplay.blit(text4, (display_width*0.1, display_height/1.1))
         
-        button("Enter!", display_width/2-150, 300, 200, 100, CONFIG.Brown, CONFIG.Bright_green, 0)
-        button("Quit!", display_width/2, 400, 200, 100, CONFIG.Brown, CONFIG.Bright_red, 1)
+        button("Enter!", display_width/2-150, 300, 200, 100, CONFIG.Brown, CONFIG.Bright_green, 400, 320, 0)
+        button("Quit!", display_width/2, 400, 200, 100, CONFIG.Brown, CONFIG.Bright_red, 100, 100, 1)
         
         pygame.display.update()
         clock.tick(15)
@@ -165,7 +165,7 @@ class Hero:
 
     def render(self, screen, camera):
         #self.rect = pygame.Rect(self.position[0]*CONFIG.SCALE, self.position[1]*CONFIG.SCALE-(camera[1]*CONFIG.SCALE),CONFIG.SCALE, CONFIG.SCALE)
-        self.rect = pygame.Rect((self.position[0]), (self.position[1]),CONFIG.SCALE, CONFIG.SCALE)
+        self.rect = pygame.Rect((self.position[0]), (self.position[1]), CONFIG.SCALE, CONFIG.SCALE)
         screen.blit(self.image, self.rect)
         print(self.rect)
         
@@ -213,16 +213,18 @@ def furniture(file, tilex, tiley, rotation, scalea, scaleb):
            
 
 clock = pygame.time.Clock()
-def main():
+def main(a,b):
     camera=[0,0]
     #where to place car
-    x = (display_width * 0.45)
-    y = (display_height * 0.8)
+    x=a
+    y=b
+    # x = (display_width * 0.45)
+    # y = (display_height * 0.8)
     x_change = 0 
     y_change = 0
     load_map("myfile")
     gameExit = False
-    hero = Hero(100, 100)
+    hero = Hero(a,b)
     # print(len(map))
     my_sprite = TestSprite()
     my_group = pygame.sprite.Group(my_sprite)
@@ -253,8 +255,17 @@ def main():
              #LOCALISED COMMANDS (OBJECT INTERACTION)
              
              #LOUNGE  ----------
-             #Window
-             #Book
+             #Window (2, 0, 0, 33, 27) (3.05, 0, 0, 33, 27)
+                if keys[pygame.K_x] and 3.05*CONFIG.SCALE+27 > x > 2*CONFIG.SCALE and y < 0*CONFIG.SCALE+27:
+                    game_intro()
+                else:
+                    pass
+                
+             #Book 6.5, 6.7, 0, 50, 50
+                if keys[pygame.K_x] and 6.6*CONFIG.SCALE+50 > x > 6.6*CONFIG.SCALE and 6.7*CONFIG.SCALE < y < 6.7*CONFIG.SCALE+50:
+                    game_intro()
+                else:
+                    pass
              
              #KITCHEN ----------
              #Pool  10, 14.2, 0, 117, 92
@@ -433,6 +444,7 @@ def main():
         my_group.update()
         my_group.draw(gameDisplay)
         hero.update_position((x, y))
+        print((x,y))
         
         
         
@@ -442,5 +454,5 @@ def main():
 
 pygame.QUIT
 game_intro()
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+    # main(100)
