@@ -115,7 +115,7 @@ def game_intro():
         pygame.display.update()
         clock.tick(15)
         
-def computer():
+def computer(initial_x, initial_y):
     """ interaction with a computer """
     
     load_map("computer")
@@ -132,6 +132,9 @@ def computer():
         
         gameDisplay.fill(CONFIG.White)
         gameDisplay.blit(TextSurf, TextRect)
+        
+        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
+        button("Return to game", display_width/1.1, 450, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
         
         pygame.display.update()
         clock.tick(15)
@@ -299,7 +302,7 @@ def main(a,b):
              #BEDROOM ---------- DONE
              #computer  22.8, 0.3, 0, 40, 65
                 if keys[pygame.K_x] and x > 22.8*CONFIG.SCALE and y < 0.31*CONFIG.SCALE+65:
-                    computer()
+                    computer(x, y)
                 else:
                     pass
                 
