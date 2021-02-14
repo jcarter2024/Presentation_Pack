@@ -574,7 +574,7 @@ def main(a,b):
             x_change=0
             y_change=0
         #top sofa 5.5, 4.3, 0, 100, 60)
-        if  5.45*CONFIG.SCALE-CONFIG.SCALE+5 < x+x_change < 5.5*CONFIG.SCALE+92 and 4.3+CONFIG.SCALE - CONFIG.SCALE< y+y_change < 4.3*CONFIG.SCALE:
+        if  5.45*CONFIG.SCALE-CONFIG.SCALE+5 < x+x_change < 5.5*CONFIG.SCALE+92 and 116 < y+y_change < 4.3*CONFIG.SCALE:
             x_change=0
             y_change=0
         #left sofa 4.5, 6, 0, 40, 90)
@@ -593,6 +593,56 @@ def main(a,b):
         if  x+x_change < 36 and 128 < y+y_change < 288:
             x_change=0
             y_change=0
+            
+        #BEDROOM
+        #upper 22.8, 0.3, 0, 40, 65)
+        if  490 < x+x_change and y+y_change < 56:
+            x_change=0
+            y_change=0
+        
+        #desk 15.5 4
+        if  528 > x+x_change > 490 and 100 < y+y_change < 196:
+            x_change=0
+            y_change=0
+            
+        #BATHROOM
+        #upper
+        if  660 > x+x_change > 450 and 430 < y+y_change < 452:
+            x_change=0
+            y_change=0
+            
+        #bath 
+        if  676 < x+x_change < 744 and 500 < y+y_change < 588:
+            x_change=0
+            y_change=0
+            
+        #vases
+        if  712 < x+x_change and y+y_change > 572:
+            x_change=0
+            y_change=0
+            
+        #KITCHEN
+        #table
+        if  212 > x+x_change > 92 and 428 < y+y_change < 536:
+            x_change=0
+            y_change=0
+        
+        #pool
+        if  424 > x+x_change > 300 and 468 < y+y_change < 552:
+            x_change=0
+            y_change=0
+            
+        #counters
+        if  20 > x+x_change and y+y_change > 408:
+            x_change=0
+            y_change=0
+        if  84 > x+x_change and y+y_change > 584:
+            x_change=0
+            y_change=0
+            
+        
+        
+        
         
         
             
@@ -655,8 +705,8 @@ def main(a,b):
         furniture("../data/images/lounge/plant2.png", 13.3, 17.5, 2, 49, 76)
         
         #globe
-        furniture("../data/images/lounge/side_table.png", 8.2, 17.5, 2, int(55*0.9), int(64*0.9))
-        furniture("../data/images/lounge/globe.png", 8.4, 16.8, 2, 40, 57)
+        furniture("../data/images/lounge/side_table.png", 8.2, 18, 2, int(55*0.9), int(64*0.9))
+        furniture("../data/images/lounge/globe.png", 8.4, 17.3, 2, 40, 57)
         
         # ---------  OTHER  ------------
         #chairs
