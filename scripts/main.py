@@ -546,13 +546,55 @@ def main(a,b):
             
             
         
-        #BOUNDARIES
+        #BOUNDARIES -----------------
+        #display
         if int((x+x_change)) < 0 or int((x+x_change)) > (display_width -1-CONFIG.SCALE):
             x_change=0
-    
-
         if int((y+y_change)) < 0 or int((y+y_change)) > (display_height -5-CONFIG.SCALE):
             y_change=0
+        
+        #Walls
+        #vertical bedroom
+        if  15*CONFIG.SCALE-CONFIG.SCALE < x+x_change < 15*CONFIG.SCALE+10 and y+y_change < 8*CONFIG.SCALE:
+            x_change=0
+        #horizontal bedroom
+        if  15*CONFIG.SCALE-CONFIG.SCALE < x+x_change and 10*CONFIG.SCALE-CONFIG.SCALE < y+y_change < 10*CONFIG.SCALE:
+            y_change=0
+        #vertical bathroom
+        if  15*CONFIG.SCALE-CONFIG.SCALE < x+x_change < 15*CONFIG.SCALE+10 and y+y_change > 13*CONFIG.SCALE-CONFIG.SCALE:
+            x_change=0
+        #horizontal bathroom 15, 13,
+        if  15.2*CONFIG.SCALE-CONFIG.SCALE < x+x_change < 21.8*CONFIG.SCALE and 13*CONFIG.SCALE-CONFIG.SCALE < y+y_change < 13*CONFIG.SCALE:
+            y_change=0
+        
+        #*****   ITEMS   *****
+        #LOUNGE
+        #tv and cabinets 8.6, 0, 0, 40, 65) (13.3, 0, 0, 40, 65)
+        if  8.8*CONFIG.SCALE-CONFIG.SCALE < x+x_change < 14*CONFIG.SCALE+10 and y+y_change < 2*CONFIG.SCALE:
+            x_change=0
+            y_change=0
+        #top sofa 5.5, 4.3, 0, 100, 60)
+        if  5.45*CONFIG.SCALE-CONFIG.SCALE+5 < x+x_change < 5.5*CONFIG.SCALE+92 and 4.3+CONFIG.SCALE - CONFIG.SCALE< y+y_change < 4.3*CONFIG.SCALE:
+            x_change=0
+            y_change=0
+        #left sofa 4.5, 6, 0, 40, 90)
+        if  4.5*CONFIG.SCALE-CONFIG.SCALE < x+x_change < 4.5*CONFIG.SCALE+14 and 6*CONFIG.SCALE - CONFIG.SCALE< y+y_change < 6*CONFIG.SCALE+60:
+            x_change=0
+            y_change=0
+        #right sofa 9.1, 6, 0, 40, 90)
+        if  320-CONFIG.SCALE < x+x_change < 9.1*CONFIG.SCALE+35 and 6*CONFIG.SCALE - CONFIG.SCALE < y+y_change < 6*CONFIG.SCALE+60:
+            x_change=0
+            y_change=0
+        #coffee table  6.5, 6.7, 0, 50, 50)
+        if  6.5*CONFIG.SCALE-CONFIG.SCALE+8 < x+x_change < 6.5*CONFIG.SCALE+48 and 6.7*CONFIG.SCALE - CONFIG.SCALE < y+y_change < 6.7*CONFIG.SCALE+30:
+            x_change=0
+            y_change=0
+        #stairs and plants
+        if  x+x_change < 36 and 128 < y+y_change < 288:
+            x_change=0
+            y_change=0
+        
+        
             
         # print('x is ' + str(int(((x+x_change)/display_width)*len(map[0]))))
         # print('y is ' +str(int(  ((y+y_change)/display_height)*len(map))))
@@ -630,6 +672,7 @@ def main(a,b):
         furniture("../data/images/walls/Mytile_1.png", 15, 2, 0, 10, 90)
         furniture("../data/images/walls/Mytile_1.png", 15, 4, 0, 10, 90)
         furniture("../data/images/walls/Mytile_1.png", 15, 6, 0, 10, 70)
+        
         furniture("../data/images/walls/Mytile_1.png", 15, 10, -90, 10, 90)
         furniture("../data/images/walls/Mytile_1.png", 17, 10, -90, 10, 90)
         furniture("../data/images/walls/Mytile_1.png", 19, 10, -90, 10, 90)
@@ -738,7 +781,7 @@ def main(a,b):
         # furniture("../data/topdown-shooter/PNG/Tiles/tile_177.png", 19.5, 9.55,  -90, 30, 60)
         # furniture("../data/topdown-shooter/PNG/Tiles/tile_153.png", 20.5, 9.55,  0,   60, 30)
         
-        
+        print(x,y)
         hero.render(gameDisplay)
         my_group.update()
         my_group.draw(gameDisplay)
