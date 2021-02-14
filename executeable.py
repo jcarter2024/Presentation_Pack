@@ -1,6 +1,6 @@
 #Script to retrieve relevant files and paths, supply to cx_Freeze to compile into executeable
 import os
-# import cx_Freeze
+import cx_Freeze
 files_list = []
 
 
@@ -16,9 +16,10 @@ executables = [cx_Freeze.Executable(dir_path+"scripts/main.py")]
 
 cx_Freeze.setup(
     name="try1",
-    options={"build_exe": {"packages":["pygame", "sys", "CONFIG", "itertools"],
+    description='A game and a presentation',
+    author='J. Carter',
+    options={"build_exe": {"packages":["pygame", "sys", "itertools"],
                             "include_files":files_list}},
     executables = executables
 
     )
-
