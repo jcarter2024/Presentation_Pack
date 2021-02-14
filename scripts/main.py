@@ -1,21 +1,18 @@
 """ Creating a room that I can move around in. Also needs files CONFIG"""
 try:
     import sys
-    import random
-    import math
-    import os
-    import random
-    import getopt
+    # import random
+    # import os
+    # import getopt
     import pygame
-    import time
+    # import time
     import CONFIG
     import itertools
-    import math
-    import numpy as np
-    from socket import *
-    from pygame.locals import *
+    # import numpy as np
+    # from socket import *
+    # from pygame.locals import *
 except ImportError:
-    print("couldn't load module. %s" % (err))
+    print("couldn't load a module.")
     sys.exit(2)
     
 pygame.init()
@@ -145,7 +142,7 @@ def game_intro():
         gameDisplay.blit(text3, (display_width*0.1, display_height/1.2))
         gameDisplay.blit(text4, (display_width*0.1, display_height/1.1))
         
-        button("Enter!", display_width/2-150, 300, 200, 100, CONFIG.Brown, CONFIG.Bright_green, 400, 320, 0)
+        button("Enter!", display_width/2-150, 300, 200, 100, CONFIG.Brown, CONFIG.Bright_green, 764, 360, 0)
         button("Quit!", display_width/2, 400, 200, 100, CONFIG.Brown, CONFIG.Bright_red, 100, 100, 1)
         
         pygame.display.update()
