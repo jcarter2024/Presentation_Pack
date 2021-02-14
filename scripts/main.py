@@ -44,7 +44,12 @@ map_tile_image = {
     #bedroom floor
     "K" : pygame.transform.scale(pygame.image.load("../data/flooring/bedroom_floor.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
     #lounge floor
-    "Z" : pygame.transform.scale(pygame.image.load("../data/flooring/lounge_floor.png"), ((CONFIG.SCALE, CONFIG.SCALE)))
+    "Z" : pygame.transform.scale(pygame.image.load("../data/flooring/lounge_floor.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    #white
+    "W" : pygame.transform.scale(pygame.image.load("../data/flooring/white.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    "H" : pygame.transform.scale(pygame.image.load("../data/flooring/black.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    "Y" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_98.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    "V" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_99.png"), ((CONFIG.SCALE, CONFIG.SCALE)))
 }
 
 
@@ -136,6 +141,9 @@ def game_intro():
 def computer(initial_x, initial_y):
     """ interaction with a computer """
     load_map("computer")
+    background = pygame.image.load("../data/images/screens/computer/terminal.png")
+    background=background.convert()
+    background=pygame.transform.scale(background, (display_width, display_height))
     
     intro = True
     while intro:
@@ -149,13 +157,142 @@ def computer(initial_x, initial_y):
         gameDisplay.fill(CONFIG.White)
         render_map(gameDisplay)
         gameDisplay.blit(TextSurf, TextRect)
-        
+        gameDisplay.blit(background, (0, 0))
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
         return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
         
         pygame.display.update()
         clock.tick(15)
-    # print(map)
+
+def window(initial_x, initial_y):
+    """ interaction with a computer """
+    load_map("window")
+    background = pygame.image.load("../data/images/screens/computer/terminal.png")
+    background=background.convert()
+    background=pygame.transform.scale(background, (display_width, display_height))
+    
+    intro = True
+    while intro:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                
+        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
+        TextSurf, TextRect = text_objects("I am a computer ", largeText)
+        
+        gameDisplay.fill(CONFIG.White)
+        render_map(gameDisplay)
+        gameDisplay.blit(TextSurf, TextRect)
+        # gameDisplay.blit(background, (0, 0))
+        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
+        
+        pygame.display.update()
+        clock.tick(15)
+
+def book(initial_x, initial_y):
+    """ interaction with a computer """
+    load_map("book")
+    background = pygame.image.load("../data/images/screens/book/newspaper.png").convert_alpha()
+    background=pygame.transform.scale(background, (int(display_width/1.1),int(display_height/1.1)))
+    background=pygame.transform.rotate(background, 4)
+    
+    intro = True
+    while intro:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                
+        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
+        TextSurf, TextRect = text_objects("I am a computer ", largeText)
+        
+        gameDisplay.fill(CONFIG.White)
+        render_map(gameDisplay)
+        gameDisplay.blit(background, (display_width/30, display_height/30))
+        gameDisplay.blit(TextSurf, TextRect)
+        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
+        
+        pygame.display.update()
+        clock.tick(15)
+        
+def pool(initial_x, initial_y):
+    """ interaction with a computer """
+    load_map("pool")
+    background = pygame.image.load("../data/images/screens/computer/terminal.png")
+    background=background.convert()
+    background=pygame.transform.scale(background, (display_width, display_height))
+    
+    intro = True
+    while intro:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                
+        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
+        TextSurf, TextRect = text_objects("I am a computer ", largeText)
+        
+        gameDisplay.fill(CONFIG.White)
+        render_map(gameDisplay)
+        gameDisplay.blit(TextSurf, TextRect)
+        gameDisplay.blit(background, (0, 0))
+        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
+        
+        pygame.display.update()
+        clock.tick(15)
+    
+def bath(initial_x, initial_y):
+    """ interaction with a computer """
+    load_map("bath")
+    background = pygame.image.load("../data/images/screens/computer/terminal.png")
+    background=background.convert()
+    background=pygame.transform.scale(background, (display_width, display_height))
+    
+    intro = True
+    while intro:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                
+        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
+        TextSurf, TextRect = text_objects("I am a computer ", largeText)
+        
+        gameDisplay.fill(CONFIG.White)
+        render_map(gameDisplay)
+        gameDisplay.blit(TextSurf, TextRect)
+        gameDisplay.blit(background, (0, 0))
+        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
+        
+        pygame.display.update()
+        clock.tick(15)
+        
+def mirror(initial_x, initial_y):
+    """ interaction with a computer """
+    load_map("mirror")
+    background = pygame.image.load("../data/images/screens/computer/terminal.png")
+    background=background.convert()
+    background=pygame.transform.scale(background, (display_width, display_height))
+    
+    intro = True
+    while intro:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                
+        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
+        TextSurf, TextRect = text_objects("I am a computer ", largeText)
+        
+        gameDisplay.fill(CONFIG.White)
+        render_map(gameDisplay)
+        gameDisplay.blit(TextSurf, TextRect)
+        gameDisplay.blit(background, (0, 0))
+        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
+        
+        pygame.display.update()
+        clock.tick(15)
 
 def render_map(screen):
         # determine_camera(hero)
@@ -297,20 +434,23 @@ def main(a,b):
              #LOUNGE  ----------
              #Window (2, 0, 0, 33, 27) (3.05, 0, 0, 33, 27)
                 if keys[pygame.K_x] and 3.05*CONFIG.SCALE+27 > x > 2*CONFIG.SCALE and y < 0*CONFIG.SCALE+27:
-                    game_intro()
+                    map.clear()
+                    window(x,y)
                 else:
                     pass
                 
              #Book 6.5, 6.7, 0, 50, 50
                 if keys[pygame.K_x] and 6.6*CONFIG.SCALE+50 > x > 6.6*CONFIG.SCALE and 6.7*CONFIG.SCALE < y < 6.7*CONFIG.SCALE+50:
-                    game_intro()
+                    map.clear()
+                    book(x,y)
                 else:
                     pass
              
              #KITCHEN ----------
              #Pool  10, 14.2, 0, 117, 92
                 if keys[pygame.K_x] and 10*CONFIG.SCALE+117 > x > 10*CONFIG.SCALE and 14.2*CONFIG.SCALE < y < 14.2*CONFIG.SCALE+92:
-                    game_intro()
+                    map.clear()
+                    pool(x, y)
                 else:
                     pass
              
@@ -325,12 +465,14 @@ def main(a,b):
             #BATHROOM ---------- DONE
             #Bath 18.3, 16.7, 0, 35, 50
                 if keys[pygame.K_x] and 18.3*CONFIG.SCALE+35 > x > 18.3*CONFIG.SCALE and 16.7*CONFIG.SCALE < y < 16.7*CONFIG.SCALE+50:
-                    game_intro()
+                    map.clear()
+                    bath(x,y)
                 else:
                     pass
             #Mirror 18.2, 13.3, 0, 34, 54
                 if keys[pygame.K_x] and 18.2*CONFIG.SCALE+34 > x > 18.2*CONFIG.SCALE and 13.3*CONFIG.SCALE < y < 13.3*CONFIG.SCALE+54:
-                    game_intro()
+                    map.clear()
+                    mirror(x,y)
                 else:
                     pass
             
