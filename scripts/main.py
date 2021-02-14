@@ -49,7 +49,10 @@ map_tile_image = {
     "W" : pygame.transform.scale(pygame.image.load("../data/flooring/white.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
     "H" : pygame.transform.scale(pygame.image.load("../data/flooring/black.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
     "Y" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_98.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "V" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_99.png"), ((CONFIG.SCALE, CONFIG.SCALE)))
+    "V" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_99.png"), ((CONFIG.SCALE, CONFIG.SCALE))), 
+    #grass
+    "P" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_01.png"), ((CONFIG.SCALE, CONFIG.SCALE))), 
+    "S" : pygame.transform.scale(pygame.image.load("../data/flooring/sky.png"), ((CONFIG.SCALE, CONFIG.SCALE)))
 }
 
 
