@@ -52,7 +52,10 @@ map_tile_image = {
     "V" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_99.png"), ((CONFIG.SCALE, CONFIG.SCALE))), 
     #grass
     "P" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_01.png"), ((CONFIG.SCALE, CONFIG.SCALE))), 
-    "S" : pygame.transform.scale(pygame.image.load("../data/flooring/sky.png"), ((CONFIG.SCALE, CONFIG.SCALE)))
+    "S" : pygame.transform.scale(pygame.image.load("../data/flooring/sky.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    #pool greens
+    "I" : pygame.transform.scale(pygame.image.load("../data/flooring/pool_green1.png"), ((CONFIG.SCALE, CONFIG.SCALE))), 
+    "J" : pygame.transform.scale(pygame.image.load("../data/flooring/pool_green2.png"), ((CONFIG.SCALE, CONFIG.SCALE)))
 }
 
 
@@ -219,9 +222,6 @@ def window(initial_x, initial_y):
         gameDisplay.blit(tree2, (6*32, 16.5*32))
         gameDisplay.blit(castle, (22.4*32, 14.6*32))
         
-        
-        
-        
         # gameDisplay.blit(TextSurf, TextRect)
         
         # gameDisplay.blit(background, (0, 0))
@@ -260,23 +260,24 @@ def book(initial_x, initial_y):
 def pool(initial_x, initial_y):
     """ interaction with a computer """
     load_map("pool")
-    background = pygame.image.load("../data/images/screens/computer/terminal.png")
-    background=background.convert()
-    background=pygame.transform.scale(background, (display_width, display_height))
     
     intro = True
     while intro:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 pygame.quit()
-                
+        11, 14.9, 0, 40, 35
+        balls = pygame.image.load("../data/images/kitchen/balls.png").convert_alpha()
+        balls=pygame.transform.scale(balls, (int(40*10), int(35*10)))
+        
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
         gameDisplay.fill(CONFIG.White)
         render_map(gameDisplay)
+        gameDisplay.blit(balls, (600, -100))
+        
         gameDisplay.blit(TextSurf, TextRect)
-        gameDisplay.blit(background, (0, 0))
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
         return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
         
@@ -657,7 +658,7 @@ def main(a,b):
         #pool table
         furniture("../data/images/kitchen/pool_table.png", 10, 14.2, 0, 117, 92)
         #balls
-        furniture("../data/images/kitchen/balls.png", 11, 14.9, 0, 40, 35)
+        furniture("../data/images/kitchen/balls.png", 11, 14.9, 0, 32, 28)
         #cueues
         furniture("../data/images/kitchen/cueues.png", 13.5, 12.5, 0, 24, 65)
         
