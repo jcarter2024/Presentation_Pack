@@ -39,6 +39,8 @@ map_tile_image = {
     "D" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_351.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
     "E" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_403.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
     "F" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_405.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    "a" : pygame.transform.scale(pygame.image.load("../data/flooring/wall.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    
     #bathroom floor
     "X" : pygame.transform.scale(pygame.image.load("../data/flooring/bathroom_floor.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
     #bedroom floor
@@ -55,7 +57,12 @@ map_tile_image = {
     "S" : pygame.transform.scale(pygame.image.load("../data/flooring/sky.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
     #pool greens
     "I" : pygame.transform.scale(pygame.image.load("../data/flooring/pool_green1.png"), ((CONFIG.SCALE, CONFIG.SCALE))), 
-    "J" : pygame.transform.scale(pygame.image.load("../data/flooring/pool_green2.png"), ((CONFIG.SCALE, CONFIG.SCALE)))
+    "J" : pygame.transform.scale(pygame.image.load("../data/flooring/pool_green2.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    #mirror surface 
+    "U" : pygame.transform.scale(pygame.image.load("../data/flooring/mirror_surface.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    #BATH
+    "t" : pygame.transform.scale(pygame.image.load("../data/flooring/water.png"), ((CONFIG.SCALE, CONFIG.SCALE)))
+
 }
 
 
@@ -103,7 +110,7 @@ def return_button(msg,x,y,w,h,inactive, active, a, b, action=None):
     
 def game_intro():
     """ Essential for a good start"""
-    pygame.mixer.music.play(-1)
+    # pygame.mixer.music.play(-1)
     intro = True
     while intro:
         for event in pygame.event.get():
@@ -287,9 +294,13 @@ def pool(initial_x, initial_y):
 def bath(initial_x, initial_y):
     """ interaction with a computer """
     load_map("bath")
-    background = pygame.image.load("../data/images/screens/computer/terminal.png")
-    background=background.convert()
-    background=pygame.transform.scale(background, (display_width, display_height))
+    ducky = pygame.image.load("../data/images/screens/bath/duck.png").convert_alpha()
+    ducky = pygame.transform.scale(ducky, (int(40*6), int(38*6)))
+    bubble = pygame.image.load("../data/images/screens/bath/bubble.png").convert_alpha()
+    bubble1 = pygame.transform.scale(bubble, (int(70), int(70)))
+    bubble2 = pygame.transform.scale(bubble, (int(40), int(40)))
+    
+    
     
     intro = True
     while intro:
@@ -302,8 +313,18 @@ def bath(initial_x, initial_y):
         
         gameDisplay.fill(CONFIG.White)
         render_map(gameDisplay)
-        gameDisplay.blit(TextSurf, TextRect)
-        gameDisplay.blit(background, (0, 0))
+        
+        gameDisplay.blit(ducky, (650, 20))
+        gameDisplay.blit(bubble1, (400, 100))
+        gameDisplay.blit(bubble1, (600, 200))
+        gameDisplay.blit(bubble1, (200, 510))
+        gameDisplay.blit(bubble2, (600, 150))
+        gameDisplay.blit(bubble1, (700, 500))
+        gameDisplay.blit(bubble2, (260, 20))
+        
+        
+        # gameDisplay.blit(TextSurf, TextRect)
+        # gameDisplay.blit(background, (0, 0))
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
         return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
         
@@ -311,11 +332,14 @@ def bath(initial_x, initial_y):
         clock.tick(15)
         
 def mirror(initial_x, initial_y):
-    """ interaction with a computer """
+    """ interaction with bathroom mirror """
     load_map("mirror")
-    background = pygame.image.load("../data/images/screens/computer/terminal.png")
+    background = pygame.image.load("../data/flooring/mirror_surface.png")
     background=background.convert()
     background=pygame.transform.scale(background, (display_width, display_height))
+    
+    reflection = pygame.image.load("../data/images/screens/mirror/player_transparent.png").convert_alpha()
+    reflection = pygame.transform.scale(reflection, (int(64*10), int(64*10)))
     
     intro = True
     while intro:
@@ -328,8 +352,9 @@ def mirror(initial_x, initial_y):
         
         gameDisplay.fill(CONFIG.White)
         render_map(gameDisplay)
-        gameDisplay.blit(TextSurf, TextRect)
         gameDisplay.blit(background, (0, 0))
+        gameDisplay.blit(reflection, (300, 200))
+        # gameDisplay.blit(TextSurf, TextRect)
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
         return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
         
@@ -408,7 +433,7 @@ class TestSprite(pygame.sprite.Sprite):
 
         self.index = 0
         self.image = self.images[self.index]
-        self.rect = pygame.Rect(17*CONFIG.SCALE, 15*CONFIG.SCALE, 64, 64)
+        self.rect = pygame.Rect(22*CONFIG.SCALE, 15*CONFIG.SCALE, 64, 64)
 
     def update(self):
         '''This method iterates through the elements inside self.images and 
@@ -445,6 +470,7 @@ def main(a,b):
     # print(map)
     map.clear()
     load_map("myfile")
+    playerspeed=4
     # print(map)
     gameExit = False
     hero = Hero(a,b)
@@ -461,13 +487,13 @@ def main(a,b):
              #KEY COMMANDS   
                 keys=pygame.key.get_pressed()    
                 if keys[pygame.K_LEFT]:
-                    x_change=-5
+                    x_change=-playerspeed
                 elif keys[pygame.K_RIGHT]:
-                    x_change=5
+                    x_change=playerspeed
                 elif keys[pygame.K_UP]:
-                    y_change=-5
+                    y_change=-playerspeed
                 elif keys[pygame.K_DOWN]:
-                    y_change=5
+                    y_change=playerspeed
                 else:
                     x_change=0 
                     y_change=0
@@ -489,8 +515,8 @@ def main(a,b):
                     pass
              
              #KITCHEN ----------
-             #Pool  10, 14.2, 0, 117, 92
-                if keys[pygame.K_x] and 10*CONFIG.SCALE+117 > x > 10*CONFIG.SCALE and 14.2*CONFIG.SCALE < y < 14.2*CONFIG.SCALE+92:
+             #Pool  10, 14.2, 0, 117, 92       9, 15.2, 0, 117, 92
+                if keys[pygame.K_x] and 9*CONFIG.SCALE+117 > x > 9*CONFIG.SCALE and 15.2*CONFIG.SCALE < y < 15.2*CONFIG.SCALE+92:
                     map.clear()
                     pool(x, y)
                 else:
@@ -505,8 +531,8 @@ def main(a,b):
                     pass
                 
             #BATHROOM ---------- DONE
-            #Bath 18.3, 16.7, 0, 35, 50
-                if keys[pygame.K_x] and 18.3*CONFIG.SCALE+35 > x > 18.3*CONFIG.SCALE and 16.7*CONFIG.SCALE < y < 16.7*CONFIG.SCALE+50:
+            #Bath 18.3, 16.7, 0, 35, 50       20.8, 16.7, 0, 35, 50)
+                if keys[pygame.K_x] and 20.5*CONFIG.SCALE+35 > x > 20.5*CONFIG.SCALE and 16.5*CONFIG.SCALE < y < 16.5*CONFIG.SCALE+50:
                     map.clear()
                     bath(x,y)
                 else:
@@ -581,7 +607,14 @@ def main(a,b):
         #book
         furniture("../data/images/lounge/book.png", 6.6, 6.7, 15, 15, 20)
         #tv chair 
-        furniture("../data/images/lounge/chair.png", 12.2, 3, 2, 33, 30)
+        # furniture("../data/images/lounge/chair.png", 12.2, 3, 2, 33, 30)
+        #plants
+        furniture("../data/images/lounge/plant3.png", 0.1, 0.2, 0, int(33*1.1), int(59*1.1))
+        furniture("../data/images/lounge/plant2.png", 13.3, 17.5, 2, 49, 76)
+        
+        #globe
+        furniture("../data/images/lounge/side_table.png", 8.2, 17.5, 2, int(55*0.9), int(64*0.9))
+        furniture("../data/images/lounge/globe.png", 8.4, 16.8, 2, 40, 57)
         
         # ---------  OTHER  ------------
         #chairs
@@ -601,10 +634,12 @@ def main(a,b):
         furniture("../data/images/walls/Mytile_1.png", 17, 10, -90, 10, 90)
         furniture("../data/images/walls/Mytile_1.png", 19, 10, -90, 10, 90)
         furniture("../data/images/walls/Mytile_1.png", 21.2, 10, -90, 10, 90)
+        furniture("../data/images/walls/Mytile_1.png", 23, 10, -90, 10, 90)
         #bathroom
         furniture("../data/images/walls/Mytile_1.png", 15, 13, 0, 10, 70)
         furniture("../data/images/walls/Mytile_1.png", 15, 15, 0, 10, 90)
         furniture("../data/images/walls/Mytile_1.png", 15, 16.2, 0, 10, 90)
+        furniture("../data/images/walls/Mytile_1.png", 15, 18, 0, 10, 90)
         
         furniture("../data/images/walls/Mytile_1.png", 15, 13, -90, 10, 90)
         furniture("../data/images/walls/Mytile_1.png", 17, 13, -90, 10, 90)
@@ -635,8 +670,10 @@ def main(a,b):
         furniture("../data/images/bedroom/computer.png", 22.8, 0.3, 0, 40, 65)
         #Bedroom Rug
         furniture("../data/images/bedroom/bedroom_rug.png", 19, 5, 0, 130, 130)
+        # furniture("../data/images/walls/Mytile_1.png", 15, 21, 0, 10, 70)
+        #lamp
+        furniture("../data/images/bedroom/lamp.png", 23.8, 7, 0, 33, 75)
         
-        furniture("../data/images/walls/Mytile_1.png", 15, 21, 0, 10, 70)
         
         # ---------  BATHROOM  ------------
         #toilet
@@ -644,23 +681,54 @@ def main(a,b):
         #sink
         furniture("../data/images/bathroom/sink.png", 15.5, 13.2, 0, 62, 54)
         #bathmat
-        furniture("../data/images/bathroom/bathmat.png", 18.3, 16.7, 0, 35, 50)
+        furniture("../data/images/bathroom/bathmat.png", 20.8, 16.7, 0, 35, 50)
         #mirror
         furniture("../data/images/bathroom/bathroom_mirror.png", 18.2, 13.3, 0, 34, 54)
+        #harp
+        furniture("../data/images/bathroom/harp.png", 15.5, 16, 0, int(52*0.8), int(72*0.8))
+        #plant
+        furniture("../data/images/lounge/plant3.png", 15.7, 18, 0, int(33*1.15), int(59*1.15))
+        #vases
+        furniture("../data/images/bathroom/vases.png", 23.1, 18.4, 0, int(61*1), int(53*1))
+        
         
         
         # ---------  KITCHEN  ------------
         #ISLAND
-        furniture("../data/images/kitchen/kitchen_island.png", 4, 15.5, 0, 65, 96)
+        furniture("../data/images/kitchen/kitchen_island.png", -0.08, 13.6, 180, 60, 96)
         #side
-        furniture("../data/images/kitchen/kitchen_side.png", 1, 15.5, 0, 26, 90)
-        furniture("../data/images/kitchen/kitchen_side.png", 1, 18.2, 90, 26, 90)
+        furniture("../data/images/kitchen/kitchen_side.png", 0, 16.5, 0, 27, 90)
+        furniture("../data/images/kitchen/kitchen_side.png", 0, 19.2, 90, 26, 90)
+
+        #chairs
+        furniture("../data/images/kitchen/chair_left.png", 3.5, 14.2, 0, 36, 57)
+        furniture("../data/images/kitchen/chair_left.png", 3.5, 15.2, 0, 36, 57)
+        furniture("../data/images/kitchen/chair_right.png", 5.9, 14.2, 0, 32, 53)
+        furniture("../data/images/kitchen/chair_right.png", 6, 15.2, 0, 32, 53)
+        #table 3, 11, 0, int(72*1.2), int(87*1.2))
+        furniture("../data/images/kitchen/table.png", 4, 14, 0, int(72*1.2), int(87*1.2))
+        furniture("../data/images/kitchen/doughnuts.png", 5, 14.3, 0, int(30*1), int(34*1))
+        furniture("../data/images/kitchen/fruit.png", 4.6, 15.7, 0, int(44*1), int(24*1))
         #pool table
-        furniture("../data/images/kitchen/pool_table.png", 10, 14.2, 0, 117, 92)
-        #balls
-        furniture("../data/images/kitchen/balls.png", 11, 14.9, 0, 32, 28)
+        furniture("../data/images/kitchen/pool_table.png", 10, 15.2, 0, 117, 92)
+        furniture("../data/images/kitchen/balls.png", 11, 15.9, 0, 32, 28)
         #cueues
-        furniture("../data/images/kitchen/cueues.png", 13.5, 12.5, 0, 24, 65)
+        furniture("../data/images/kitchen/cueues.png", 14, 13.5, 0, 24, 65)
+        
+        # ---------  Corridor  ------------
+        #door
+        furniture("../data/images/corridor/door.png", 24.8, 11, 0, 8, 50)
+        #doormat
+        furniture("../data/images/corridor/doormat.png", 23.8, 11.1, 0, int(87/2.8), int(128/2.8))
+        #plants by stairs
+        furniture("../data/images/lounge/plant.png", -0.1,4.5, 0, 51, 81)
+        #stairs
+        furniture("../data/images/corridor/stairs.png", -0.6, 6, 0, int(80/1.5), int(96/1.5))
+        furniture("../data/images/lounge/plant.png", -0.1,7, 0, 51, 81)
+        #vase
+        furniture("../data/images/corridor/vase.png", 0,11, 0, 30, 30)
+        
+        
         
         
         # furniture("../data/topdown-shooter/PNG/Tiles/tile_153.png", 18.5, 9,     180, 60, 30)
