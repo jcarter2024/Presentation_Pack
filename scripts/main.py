@@ -170,9 +170,25 @@ def computer(initial_x, initial_y):
 def window(initial_x, initial_y):
     """ interaction with a computer """
     load_map("window")
-    background = pygame.image.load("../data/images/screens/computer/terminal.png")
-    background=background.convert()
-    background=pygame.transform.scale(background, (display_width, display_height))
+    #clouds
+    cloud1 = pygame.image.load("../data/images/screens/window/cloud4.png").convert_alpha()
+    cloud2 = pygame.image.load("../data/images/screens/window/cloud5.png").convert_alpha()
+    cloud3 = pygame.image.load("../data/images/screens/window/cloud7.png").convert_alpha()
+    #trees
+    tree1 = pygame.image.load("../data/images/screens/window/tree1.png").convert_alpha()
+    tree2 = pygame.image.load("../data/images/screens/window/tree2.png").convert_alpha()
+    #castle
+    castle = pygame.image.load("../data/images/screens/window/castle.png").convert_alpha()
+    
+    cloud1=pygame.transform.scale(cloud1, (int(228/2.5), int(124/2.5)))
+    cloud2=pygame.transform.scale(cloud2, (int(238/1.5), int(135/1.5)))
+    cloud3=pygame.transform.scale(cloud3, (int(234/3), int(118/3)))
+    cloud4=pygame.transform.scale(cloud3, (int(238/1.5), int(135/1.5)))
+    cloud5=pygame.transform.scale(cloud2, (int(234/3), int(118/3)))
+    tree1=pygame.transform.scale(tree1, (int(129/4), int(230/4)))
+    tree2=pygame.transform.scale(tree2, (int(106/4), int(241/4)))
+    castle=pygame.transform.scale(castle, (int(204/4), int(182/4)))
+    
     
     intro = True
     while intro:
@@ -185,7 +201,29 @@ def window(initial_x, initial_y):
         
         gameDisplay.fill(CONFIG.White)
         render_map(gameDisplay)
-        gameDisplay.blit(TextSurf, TextRect)
+        #blit images
+        gameDisplay.blit(cloud1, (100, 50))
+        gameDisplay.blit(cloud2, (160, 70))
+        gameDisplay.blit(cloud3, (280, 30))
+        gameDisplay.blit(cloud4, (450, 50))
+        gameDisplay.blit(cloud5, (650, 70))
+        
+        gameDisplay.blit(tree1, (3*32, 16.8*32))
+        gameDisplay.blit(tree1, (7.9*32, 15.5*32))
+        gameDisplay.blit(tree1, (19*32, 17*32))
+        gameDisplay.blit(tree1, (14*32, 16*32))
+        
+        gameDisplay.blit(tree2, (20*32, 16*32))
+        gameDisplay.blit(tree2, (13*32, 14*32))
+        gameDisplay.blit(tree2, (15*32, 14.5*32))
+        gameDisplay.blit(tree2, (6*32, 16.5*32))
+        gameDisplay.blit(castle, (22.4*32, 14.6*32))
+        
+        
+        
+        
+        # gameDisplay.blit(TextSurf, TextRect)
+        
         # gameDisplay.blit(background, (0, 0))
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
         return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
