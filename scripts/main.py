@@ -369,6 +369,70 @@ def mirror(initial_x, initial_y):
         
         pygame.display.update()
         clock.tick(15)
+        
+def globe(initial_x, initial_y):
+    """ interaction with bathroom mirror """
+    load_map("mirror")
+    background = pygame.image.load("../data/flooring/mirror_surface.png")
+    background=background.convert()
+    background=pygame.transform.scale(background, (display_width, display_height))
+    
+    reflection = pygame.image.load("../data/images/screens/mirror/player_transparent.png").convert_alpha()
+    reflection = pygame.transform.scale(reflection, (int(64*10), int(64*10)))
+    
+    intro = True
+    while intro:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                
+        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
+        TextSurf, TextRect = text_objects("I am a computer ", largeText)
+        
+        gameDisplay.fill(White)
+        render_map(gameDisplay)
+        gameDisplay.blit(background, (0, 0))
+        gameDisplay.blit(reflection, (300, 200))
+        # gameDisplay.blit(TextSurf, TextRect)
+        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
+        
+        pygame.display.update()
+        clock.tick(15)
+
+def desk(initial_x, initial_y):
+    """ interaction with desk """
+    load_map("mirror")
+    background = pygame.image.load("../data/flooring/pool_green2.png")
+    background=background.convert()
+    background=pygame.transform.scale(background, (display_width, display_height))
+    
+    book = pygame.image.load("../data/images/screens/desk/books.png").convert_alpha()
+    pencil = pygame.image.load("../data/images/screens/desk/pencil.png").convert_alpha()
+    book = pygame.transform.scale(book, (int(260*2), int(280*2)))
+    pencil = pygame.transform.scale(pencil, (int(260), int(280)))
+    pencil=pygame.transform.rotate(pencil,190)
+    
+    intro = True
+    while intro:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                
+        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
+        TextSurf, TextRect = text_objects("I am a computer ", largeText)
+        
+        gameDisplay.fill(White)
+        render_map(gameDisplay)
+        gameDisplay.blit(background, (0, 0))
+        gameDisplay.blit(book, (570, -100))
+        gameDisplay.blit(pencil, (-150, 400))
+        # gameDisplay.blit(TextSurf, TextRect)
+        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
+        
+        pygame.display.update()
+        clock.tick(15)
 
 def render_map(screen):
         # determine_camera(hero)
@@ -505,15 +569,22 @@ def main(a,b):
                     pass
                 
              #Book 6.5, 6.7, 0, 50, 50
-                if keys[pygame.K_x] and 6.6*SCALE+50 > x > 6.6*SCALE and 6.7*SCALE < y < 6.7*SCALE+50:
+                if keys[pygame.K_x] and 6.6*SCALE+50 > x > 183 and 6.7*SCALE < y < 6.7*SCALE+50:
                     map.clear()
                     book(x,y)
+                else:
+                    pass
+            
+            #Globe
+                if keys[pygame.K_x] and 296 > x > 248 and 548 < y < 600:
+                    map.clear()
+                    globe(x,y)
                 else:
                     pass
              
              #KITCHEN ----------
              #Pool  10, 14.2, 0, 117, 92       9, 15.2, 0, 117, 92
-                if keys[pygame.K_x] and 9*SCALE+117 > x > 9*SCALE and 15.2*SCALE < y < 15.2*SCALE+92:
+                if keys[pygame.K_x] and 425 > x > 9*SCALE and 467 < y < 15.2*SCALE+92:
                     map.clear()
                     pool(x, y)
                 else:
@@ -526,10 +597,16 @@ def main(a,b):
                     computer(x, y)
                 else:
                     pass
+            #desk
+                if keys[pygame.K_x] and 532 > x > 460 and 99< y < 204:
+                    map.clear()
+                    desk(x, y)
+                else:
+                    pass
                 
             #BATHROOM ---------- DONE
             #Bath 18.3, 16.7, 0, 35, 50       20.8, 16.7, 0, 35, 50)
-                if keys[pygame.K_x] and 20.5*SCALE+35 > x > 20.5*SCALE and 16.5*SCALE < y < 16.5*SCALE+50:
+                if keys[pygame.K_x] and 765 > x > 20.5*SCALE and 505 < y < 16.5*SCALE+50:
                     map.clear()
                     bath(x,y)
                 else:
