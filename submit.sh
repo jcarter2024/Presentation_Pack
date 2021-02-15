@@ -6,7 +6,7 @@
 #SBATCH --time=00:10:00
 #SBATCH --account=ta016
 #SBATCH --partition=standard
-#SBATCH --qos=standardSBATCH
+#SBATCH --qos=standard
 
 module load epcc-job-env
 module load cray-python
