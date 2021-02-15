@@ -87,9 +87,32 @@ def button(msg,x,y,w,h,inactive, active, a, b, action=None):
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
         pygame.draw.rect(gameDisplay, active, (x, y, w, h))
         if click[0] == 1 and action != None:
-            if action == 0:
-                main(a,b)
-            elif action == 1:
+            print(action)
+            if action <1:
+                main(a,b)  
+            elif action == 2:
+                print("yes")
+                game_intro2()
+            elif 1 < action < 2:
+                pygame.quit()
+    else:
+        pygame.draw.rect(gameDisplay, inactive, (x, y, w, h))
+            
+    smallText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 30)
+    textSurf, textRect = text_objects(msg, smallText)
+    textRect.center = ((x+(w/2), y+(h/2)))
+    gameDisplay.blit(textSurf, textRect)
+    
+def nextpage(msg,x,y,w,h,inactive, active, a, b, string):
+    mouse = pygame.mouse.get_pos()
+    click=pygame.mouse.get_pressed()
+    if x+w > mouse[0] > x and y+h > mouse[1] > y:
+        pygame.draw.rect(gameDisplay, active, (x, y, w, h))
+        if click[0] == 1 and string != None:
+            if string == 0:
+                print("yes")
+                game_intro(2)
+            elif string == 1:
                 pygame.quit()
     else:
         pygame.draw.rect(gameDisplay, inactive, (x, y, w, h))
@@ -117,7 +140,7 @@ def return_button(msg,x,y,w,h,inactive, active, a, b, action=None):
     textRect.center = ((x+(w/2), y+(h/2)))
     gameDisplay.blit(textSurf, textRect)
     
-def game_intro():
+def game_intro(page):
     """ Essential for a good start"""
     # pygame.mixer.music.play(-1)
     intro = True
@@ -131,34 +154,52 @@ def game_intro():
         for x,y in itertools.product(range(0,display_width,tile_width),
                                  range(0,display_height,tile_height)):
             gameDisplay.blit(image, (x, y))
-        # background = pygame.transform.scale(image, (display_width, display_height))
-        # background = background.convert()
-        # gameDisplay.blit(background, (0, 0))
-        #gameDisplay.fill("../data/topdown-shooter/PNG/Tiles/tile73.png")
+        #p1
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         largeText2=pygame.font.SysFont ("bitstreamverasans", 30)
-        text2=largeText2.render("Lockdown Edition", True, Yellow)
-        text2 = pygame.transform.rotate(text2, -30)
+        smalltext=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 25)
         
-        text3=largeText2.render("A programme developed using GitHub", True, White)
-        text4=largeText2.render("compiled on ARCHER2 using BASH", True, White)
+        if page==1:
+            text2=largeText2.render("Lockdown Edition", True, Yellow)
+            text2 = pygame.transform.rotate(text2, -30)
+            text3=largeText2.render("A programme developed using GitHub", True, White)
+            text4=largeText2.render("compiled on ARCHER2 using BASH", True, White)
+            TextSurf, TextRect = text_objects("The Advanced ", largeText)
+            TextSurf2, TextRect2 = text_objects("Scripting Workshop", largeText)
+            TextRect.center = (display_width/2, display_height/3)
+            TextRect2.center = (display_width/2, display_height/3+40)
+            gameDisplay.blit(TextSurf, TextRect)
+            gameDisplay.blit(TextSurf2, TextRect2)
+            gameDisplay.blit(text2, (display_width*0.65, display_height/6))
+            gameDisplay.blit(text3, (display_width*0.1, display_height/1.2))
+            gameDisplay.blit(text4, (display_width*0.1, display_height/1.1))
+            nextpage("Enter!", display_width/2-150, 300, 200, 100, Brown, Bright_green, 764, 360, 0)
+            button("Quit!", display_width/2, 400, 200, 100, Brown, Bright_red, 100, 100, 1)
+        elif page==2:
+            TextSurf, TextRect = text_objects("This program was coded using pygame,", smalltext)
+            TextSurf2, TextRect2 = text_objects("built on ARCHER2,  ", smalltext)
+            TextSurf3, TextRect3 = text_objects("and developed via github.", smalltext)
+            TextSurf4, TextRect4 = text_objects("Credit to gathertown for inspiring this presentation format. .", smalltext)
+            TextSurf5, TextRect5 = text_objects("Visit the window to begin...", smalltext)
+            
+            TextRect.center = (display_width/2, 100)
+            TextRect2.center = (display_width/2, 200)
+            TextRect3.center = (display_width/2, 300)
+            TextRect4.center = (display_width/2, 400)
+            TextRect5.center = (display_width/2, 600)
+            gameDisplay.blit(TextSurf, TextRect)
+            gameDisplay.blit(TextSurf2, TextRect2)
+            gameDisplay.blit(TextSurf3, TextRect3)
+            gameDisplay.blit(TextSurf4, TextRect4)
+            gameDisplay.blit(TextSurf5, TextRect5)
+            button("Enter!", 650, 550, 100, 50, Brown, Bright_green, 764, 360, 0)
 
-        
-        TextSurf, TextRect = text_objects("The Advanced ", largeText)
-        TextSurf2, TextRect2 = text_objects("Scripting Workshop", largeText)
-        TextRect.center = (display_width/2, display_height/3)
-        TextRect2.center = (display_width/2, display_height/3+40)
-        gameDisplay.blit(TextSurf, TextRect)
-        gameDisplay.blit(TextSurf2, TextRect2)
-        gameDisplay.blit(text2, (display_width*0.65, display_height/6))
-        gameDisplay.blit(text3, (display_width*0.1, display_height/1.2))
-        gameDisplay.blit(text4, (display_width*0.1, display_height/1.1))
-        
-        button("Enter!", display_width/2-150, 300, 200, 100, Brown, Bright_green, 764, 360, 0)
-        button("Quit!", display_width/2, 400, 200, 100, Brown, Bright_red, 100, 100, 1)
+        else:
+            pass
         
         pygame.display.update()
         clock.tick(15)
+    
         
 def computer(initial_x, initial_y):
     """ interaction with a computer """
@@ -373,7 +414,7 @@ def mirror(initial_x, initial_y):
 def globe(initial_x, initial_y):
     """ interaction with bathroom mirror """
     load_map("mirror")
-    background = pygame.image.load("../data/flooring/mirror_surface.png")
+    background = pygame.image.load("../data/images/screens/globe/map.png")
     background=background.convert()
     background=pygame.transform.scale(background, (display_width, display_height))
     
@@ -392,7 +433,7 @@ def globe(initial_x, initial_y):
         gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(background, (0, 0))
-        gameDisplay.blit(reflection, (300, 200))
+        # gameDisplay.blit(reflection, (300, 200))
         # gameDisplay.blit(TextSurf, TextRect)
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
         return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
@@ -904,8 +945,7 @@ def main(a,b):
         # furniture("../data/topdown-shooter/PNG/Tiles/tile_152.png", 18.5, 9.55,  0,   60, 30)
         # furniture("../data/topdown-shooter/PNG/Tiles/tile_177.png", 19.5, 9.55,  -90, 30, 60)
         # furniture("../data/topdown-shooter/PNG/Tiles/tile_153.png", 20.5, 9.55,  0,   60, 30)
-        
-        print(x,y)
+
         hero.render(gameDisplay)
         my_group.update()
         my_group.draw(gameDisplay)
@@ -918,6 +958,6 @@ def main(a,b):
         
 
 pygame.QUIT
-game_intro()
+game_intro(1)
 # if __name__ == "__main__":
     # main(100)
