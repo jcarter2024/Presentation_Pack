@@ -120,13 +120,13 @@ def nextpage(msg,x,y,w,h,inactive, active, a, b, string):
             elif string ==5:    
                 book(a,b,2)
             elif string ==6:    
-                comp(a,b,2)
+                computer(a,b,2)
             elif string ==7:    
                 desk(a,b,2)
             elif string ==8:    
                 bath(a,b,2)
             elif string ==9:    
-                reflect(a,b,2)
+                mirror(a,b,2)
     else:
         pygame.draw.rect(gameDisplay, inactive, (x, y, w, h))
             
@@ -155,7 +155,7 @@ def return_button(msg,x,y,w,h,inactive, active, a, b, action=None):
     
 def game_intro(page):
     """ Essential for a good start"""
-    # pygame.mixer.music.play(-1)
+    pygame.mixer.music.play(-1)
     intro = True
     while intro:
         for event in pygame.event.get():
@@ -228,15 +228,74 @@ def computer(initial_x, initial_y, page):
                 pygame.quit()
                 
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
-        TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
         gameDisplay.fill(White)
         render_map(gameDisplay)
-        gameDisplay.blit(TextSurf, TextRect)
         gameDisplay.blit(background, (0, 0))
-        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
-        return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
-        
+        if page ==1:            
+            TextSurf,  TextRect = text_objects("Running WRF simulations is an intensive process. With ", smalltext)
+            TextSurf1,  TextRect1 = text_objects("supercomputer access a single two-day simulation ", smalltext)
+            TextSurf2,  TextRect2 = text_objects("can be conducted within 24 hours at high resolution.  ", smalltext)
+            TextSurf3,  TextRect3 = text_objects("Currently, this research is limited by the Manchester", smalltext)
+            TextSurf4,  TextRect4 = text_objects("CSF-HPC which is extremely busy and often undergoes . ", smalltext)
+            TextSurf5,  TextRect5 = text_objects(" periods of downtime. With the use of Archer2 simulations", smalltext)
+            TextSurf6,  TextRect6 = text_objects("can be carried out at higher resolutions without a large", smalltext)
+            TextSurf7,  TextRect7 = text_objects(" time penalty.  This will directly impact ISHMAEL simulations", smalltext)
+            TextSurf8,  TextRect8 = text_objects("by increasing the amount of ice-spheroids available, creating", smalltext)
+
+            
+            TextRect.center = (display_width/2, 210)
+            TextRect1.center = (display_width/2, 240)
+            TextRect2.center = (display_width/2, 270)
+            TextRect3.center = (display_width/2, 300)
+            TextRect4.center = (display_width/2, 330)
+            TextRect5.center = (display_width/2, 360)
+            TextRect6.center = (display_width/2, 390)
+            TextRect7.center = (display_width/2, 420)
+            TextRect8.center = (display_width/2, 450)
+            
+
+            
+            gameDisplay.blit(TextSurf, TextRect)
+            gameDisplay.blit(TextSurf1, TextRect1)
+            gameDisplay.blit(TextSurf2, TextRect2)
+            gameDisplay.blit(TextSurf3, TextRect3)
+            gameDisplay.blit(TextSurf4, TextRect4)
+            gameDisplay.blit(TextSurf5, TextRect5)
+            gameDisplay.blit(TextSurf6, TextRect6)
+            gameDisplay.blit(TextSurf7, TextRect7)
+            gameDisplay.blit(TextSurf8, TextRect8)
+    
+
+            nextpage("Next page", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 6)
+        elif page==2:
+            TextSurf1,  TextRect1 = text_objects(" more feedback to the riming process due to ", smalltext)
+            TextSurf2,  TextRect2 = text_objects(" localised environmental changes. Archer will ", smalltext)
+            TextSurf3,  TextRect3 = text_objects("provide a crucial second platform to conduct simulations ", smalltext)
+            TextSurf4,  TextRect4 = text_objects("not only broadening the availability of simulation time, but ", smalltext)
+            TextSurf5,  TextRect5 = text_objects("also providing an important safety net to combat HPC downtime" , smalltext)
+            TextSurf6,  TextRect6= text_objects("Go to the desk to hear more about BASH", smalltext)
+
+
+    
+            TextRect1.center = (display_width/2, 210)
+            TextRect2.center = (display_width/2, 240)
+            TextRect3.center = (display_width/2, 270)
+            TextRect4.center = (display_width/2, 300)
+            TextRect5.center = (display_width/2, 330)
+            TextRect6.center = (display_width/2, 360)
+
+
+
+            gameDisplay.blit(TextSurf1, TextRect1)
+            gameDisplay.blit(TextSurf2, TextRect2)
+            gameDisplay.blit(TextSurf3, TextRect3)
+            gameDisplay.blit(TextSurf4, TextRect4)
+            gameDisplay.blit(TextSurf5, TextRect5)
+            gameDisplay.blit(TextSurf6, TextRect6)
+
+            return_button("Return to game", display_width/1.2, 500, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
+   
         pygame.display.update()
         clock.tick(15)
 
@@ -598,7 +657,6 @@ def bath(initial_x, initial_y, page):
                 pygame.quit()
                 
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
-        TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
         gameDisplay.fill(White)
         render_map(gameDisplay)
@@ -611,12 +669,70 @@ def bath(initial_x, initial_y, page):
         gameDisplay.blit(bubble1, (700, 500))
         gameDisplay.blit(bubble2, (260, 20))
         
-        
-        # gameDisplay.blit(TextSurf, TextRect)
-        # gameDisplay.blit(background, (0, 0))
-        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
-        return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
-        
+        if page ==1:            
+            TextSurf,  TextRect = text_objects("The GIT component of this course will allow for my research ", smalltext)
+            TextSurf1,  TextRect1 = text_objects("tools to be structured, stored and developed in a cohesive manner.", smalltext)
+            TextSurf2,  TextRect2 = text_objects("I often develop lengthy code, but have been unwilling ", smalltext)
+            TextSurf3,  TextRect3 = text_objects("to use GIT due to its perceived complexity. Now code ", smalltext)
+            TextSurf4,  TextRect4 = text_objects("can be safely backed up, and shared more easily  ", smalltext)
+            TextSurf5,  TextRect5 = text_objects("for collaboration. As I work on and develop the ISHMAEL code", smalltext)
+            TextSurf6,  TextRect6 = text_objects("it will be essential to have records that can be shared with ", smalltext)
+            TextSurf7,  TextRect7 = text_objects("its authors across the world. Most importantly it will ", smalltext)
+            TextSurf8,  TextRect8 = text_objects("protect against the main source of error, my own edits  ", smalltext)
+
+            
+            TextRect.center = (display_width/2, 210)
+            TextRect1.center = (display_width/2, 240)
+            TextRect2.center = (display_width/2, 270)
+            TextRect3.center = (display_width/2, 300)
+            TextRect4.center = (display_width/2, 330)
+            TextRect5.center = (display_width/2, 360)
+            TextRect6.center = (display_width/2, 390)
+            TextRect7.center = (display_width/2, 420)
+            TextRect8.center = (display_width/2, 450)
+            
+
+            
+            gameDisplay.blit(TextSurf, TextRect)
+            gameDisplay.blit(TextSurf1, TextRect1)
+            gameDisplay.blit(TextSurf2, TextRect2)
+            gameDisplay.blit(TextSurf3, TextRect3)
+            gameDisplay.blit(TextSurf4, TextRect4)
+            gameDisplay.blit(TextSurf5, TextRect5)
+            gameDisplay.blit(TextSurf6, TextRect6)
+            gameDisplay.blit(TextSurf7, TextRect7)
+            gameDisplay.blit(TextSurf8, TextRect8)
+    
+
+            nextpage("Next page", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 8)
+        elif page==2:
+            TextSurf1,  TextRect1 = text_objects(" that break the code in ever more confusing ,", smalltext)
+            TextSurf2,  TextRect2 = text_objects(" and deceptive ways ", smalltext)
+            TextSurf3,  TextRect3 = text_objects(" ", smalltext)
+            TextSurf4,  TextRect4 = text_objects("Head to the mirror to 'reflect' on this presentation!", smalltext)
+            TextSurf5,  TextRect5 = text_objects("" , smalltext)
+            TextSurf6,  TextRect6= text_objects("", smalltext)
+
+
+    
+            TextRect1.center = (display_width/2, 210)
+            TextRect2.center = (display_width/2, 240)
+            TextRect3.center = (display_width/2, 270)
+            TextRect4.center = (display_width/2, 300)
+            TextRect5.center = (display_width/2, 330)
+            TextRect6.center = (display_width/2, 360)
+
+
+
+            gameDisplay.blit(TextSurf1, TextRect1)
+            gameDisplay.blit(TextSurf2, TextRect2)
+            gameDisplay.blit(TextSurf3, TextRect3)
+            gameDisplay.blit(TextSurf4, TextRect4)
+            gameDisplay.blit(TextSurf5, TextRect5)
+            gameDisplay.blit(TextSurf6, TextRect6)
+
+            return_button("Return to game", display_width/1.2, 500, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
+   
         pygame.display.update()
         clock.tick(15)
         
@@ -638,16 +754,82 @@ def mirror(initial_x, initial_y, page):
                 pygame.quit()
                 
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
-        TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
         gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(background, (0, 0))
         gameDisplay.blit(reflection, (300, 200))
-        # gameDisplay.blit(TextSurf, TextRect)
-        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
-        return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
-        
+        if page ==1:            
+            TextSurf,  TextRect = text_objects("To recap (and reflect), the content delivered on this course ", smalltext)
+            TextSurf1,  TextRect1 = text_objects("will make for a much more efficient workflow. ", smalltext)
+            TextSurf2,  TextRect2 = text_objects("My research seeks to understand how we can improve computational ", smalltext)
+            TextSurf3,  TextRect3 = text_objects("models of the riming process, by incorporating ice shape", smalltext)
+            TextSurf4,  TextRect4 = text_objects("WRF is used to simulate storm events, during which ", smalltext)
+            TextSurf5,  TextRect5 = text_objects("microphysics schemes are compared and assessed", smalltext)
+            TextSurf6,  TextRect6 = text_objects("to deduce their accuracy", smalltext)
+            TextSurf7,  TextRect7 = text_objects("These simulations are impeded by a lack of compute resource", smalltext)
+            TextSurf8,  TextRect8 = text_objects("which will be resolved by splitting my research between two ", smalltext)
+
+            
+            TextRect.center = (display_width/2, 210)
+            TextRect1.center = (display_width/2, 240)
+            TextRect2.center = (display_width/2, 270)
+            TextRect3.center = (display_width/2, 300)
+            TextRect4.center = (display_width/2, 330)
+            TextRect5.center = (display_width/2, 360)
+            TextRect6.center = (display_width/2, 390)
+            TextRect7.center = (display_width/2, 420)
+            TextRect8.center = (display_width/2, 450)
+            
+
+            
+            gameDisplay.blit(TextSurf, TextRect)
+            gameDisplay.blit(TextSurf1, TextRect1)
+            gameDisplay.blit(TextSurf2, TextRect2)
+            gameDisplay.blit(TextSurf3, TextRect3)
+            gameDisplay.blit(TextSurf4, TextRect4)
+            gameDisplay.blit(TextSurf5, TextRect5)
+            gameDisplay.blit(TextSurf6, TextRect6)
+            gameDisplay.blit(TextSurf7, TextRect7)
+            gameDisplay.blit(TextSurf8, TextRect8)
+    
+
+            nextpage("Next page", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 9)
+        elif page==2:
+            TextSurf1,  TextRect1 = text_objects("HPC facilities, and by utilising ARCHER2 to conduct the ", smalltext)
+            TextSurf2,  TextRect2 = text_objects(" most intensive simulations. Access to two facilities is ", smalltext)
+            TextSurf3,  TextRect3 = text_objects("crucial to accessing resources during downtime. ", smalltext)
+            TextSurf4,  TextRect4 = text_objects("Compiling and editing this code is difficult, but made easier ", smalltext)
+            TextSurf5,  TextRect5 = text_objects("by increased knowledge of command-line tools, " , smalltext)
+            TextSurf6,  TextRect6= text_objects("Documenting edits to the source code is now possible with GIT", smalltext)
+            TextSurf7,  TextRect7= text_objects("This allows for potentially catastrophic errors to be reverted, and", smalltext)
+            TextSurf8,  TextRect8= text_objects("also simplifies international collaboration.", smalltext)
+
+
+    
+            TextRect1.center = (display_width/2, 210)
+            TextRect2.center = (display_width/2, 240)
+            TextRect3.center = (display_width/2, 270)
+            TextRect4.center = (display_width/2, 300)
+            TextRect5.center = (display_width/2, 330)
+            TextRect6.center = (display_width/2, 360)
+            TextRect7.center = (display_width/2, 390)
+            TextRect8.center = (display_width/2, 420)
+
+
+
+            gameDisplay.blit(TextSurf1, TextRect1)
+            gameDisplay.blit(TextSurf2, TextRect2)
+            gameDisplay.blit(TextSurf3, TextRect3)
+            gameDisplay.blit(TextSurf4, TextRect4)
+            gameDisplay.blit(TextSurf5, TextRect5)
+            gameDisplay.blit(TextSurf6, TextRect6)
+            gameDisplay.blit(TextSurf7, TextRect7)
+            gameDisplay.blit(TextSurf8, TextRect8)
+
+            return_button("Return to game", display_width/1.2, 500, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
+   
+ 
         pygame.display.update()
         clock.tick(15)
         
@@ -771,17 +953,79 @@ def desk(initial_x, initial_y, page):
                 pygame.quit()
                 
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
-        TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
         gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(background, (0, 0))
         gameDisplay.blit(book, (570, -100))
         gameDisplay.blit(pencil, (-150, 400))
-        # gameDisplay.blit(TextSurf, TextRect)
-        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
-        return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
-        
+        if page ==1:            
+            TextSurf,  TextRect = text_objects("The BASH component of this course has  ", smalltext)
+            TextSurf1,  TextRect1 = text_objects("provided new tools for file handling, ", smalltext)
+            TextSurf2,  TextRect2 = text_objects("that will allow for more efficient", smalltext)
+            TextSurf3,  TextRect3 = text_objects("workflows, and increased confidence", smalltext)
+            TextSurf4,  TextRect4 = text_objects(" on the command line.  Compiling WRF,", smalltext)
+            TextSurf5,  TextRect5 = text_objects(" and making amendments to its source", smalltext)
+            TextSurf6,  TextRect6 = text_objects("code can be a lengthy and stressful process.", smalltext)
+            TextSurf7,  TextRect7 = text_objects("The addition of new commands, and information on environmental .", smalltext)
+            TextSurf8,  TextRect8 = text_objects("variables in particular, will be integral to resolving virtual", smalltext)
+
+            
+            TextRect.center = (display_width/2-100, 210)
+            TextRect1.center = (display_width/2-100, 240)
+            TextRect2.center = (display_width/2-100, 270)
+            TextRect3.center = (display_width/2-100, 300)
+            TextRect4.center = (display_width/2, 330)
+            TextRect5.center = (display_width/2, 360)
+            TextRect6.center = (display_width/2, 390)
+            TextRect7.center = (display_width/2, 420)
+            TextRect8.center = (display_width/2, 450)
+            
+
+            
+            gameDisplay.blit(TextSurf, TextRect)
+            gameDisplay.blit(TextSurf1, TextRect1)
+            gameDisplay.blit(TextSurf2, TextRect2)
+            gameDisplay.blit(TextSurf3, TextRect3)
+            gameDisplay.blit(TextSurf4, TextRect4)
+            gameDisplay.blit(TextSurf5, TextRect5)
+            gameDisplay.blit(TextSurf6, TextRect6)
+            gameDisplay.blit(TextSurf7, TextRect7)
+            gameDisplay.blit(TextSurf8, TextRect8)
+    
+
+            nextpage("Next page", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 7)
+        elif page==2:
+            TextSurf1,  TextRect1 = text_objects(" environment issues Interacting with system ", smalltext)
+            TextSurf2,  TextRect2 = text_objects(" files is inefficient in my preferred language ", smalltext)
+            TextSurf3,  TextRect3 = text_objects(" of python. BASH naturally lends itself to file", smalltext)
+            TextSurf4,  TextRect4 = text_objects(" handling, and will reduce the amount of time wasted ", smalltext)
+            TextSurf5,  TextRect5 = text_objects("manually  editing text files. Simple scripts can be built " , smalltext)
+            TextSurf6,  TextRect6= text_objects("for otherwise laborious manual tasks.", smalltext)
+            TextSurf7,  TextRect7= text_objects("Head to the bath for more information on GIT", smalltext)
+
+
+    
+            TextRect1.center = (display_width/2-100, 210)
+            TextRect2.center = (display_width/2-100, 240)
+            TextRect3.center = (display_width/2-100, 270)
+            TextRect4.center = (display_width/2-100, 300)
+            TextRect5.center = (display_width/2, 330)
+            TextRect6.center = (display_width/2, 360)
+            TextRect7.center = (display_width/2, 390)
+
+
+
+            gameDisplay.blit(TextSurf1, TextRect1)
+            gameDisplay.blit(TextSurf2, TextRect2)
+            gameDisplay.blit(TextSurf3, TextRect3)
+            gameDisplay.blit(TextSurf4, TextRect4)
+            gameDisplay.blit(TextSurf5, TextRect5)
+            gameDisplay.blit(TextSurf6, TextRect6)
+            gameDisplay.blit(TextSurf7, TextRect6)
+
+            return_button("Return to game", display_width/1.2, 500, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
+   
         pygame.display.update()
         clock.tick(15)
 
