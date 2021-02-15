@@ -1,6 +1,6 @@
 #Script to retrieve relevant files and paths, supply to cx_Freeze to compile into executeable
 import os
-import cx_Freeze
+# import cx_Freeze
 files_list = []
 
 
@@ -11,7 +11,7 @@ for root, directories, filenames in os.walk(str(dir_path)):
         path=os.path.join(root, file)
         if path.find('/.') == -1 and path.find('__pycache__') == -1: #finds the paths where /. doesn't exist 
             files_list.append(path)
-
+print(files_list)
 executables = [cx_Freeze.Executable(dir_path+"scripts/main.py")]
 
 cx_Freeze.setup(

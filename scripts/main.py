@@ -6,7 +6,7 @@ try:
     # import getopt
     import pygame
     # import time
-    import CONFIG
+    # import CONFIG
     import itertools
     # import numpy as np
     # from socket import *
@@ -22,43 +22,55 @@ pygame.mixer.music.load("../data/jazz.mp3")
 # display_height = 480   
 display_width = 800 
 display_height = 640   
+White = (255,255,255)
+Black = (0,0,0)
+Red = (200, 0, 0)
+Bright_red = (255, 0, 0)
+Bright_green = (0, 255, 0)
+Green = (0,200, 0)
+Yellow = (204, 204, 0)
+Brown = (139,69,19)
+
+car_width = 75
+
+SCALE = 32
 gameDisplay=pygame.display.set_mode((display_width, display_height))  
 pygame.display.set_caption('Explore the house to discover some science')
 map = []
 camera=[0,0]
 map_tile_image = {
-    "G" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_97.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "L" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_376.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "R" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_378.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "T" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_350.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "B" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_404.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "C" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_349.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "D" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_351.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "E" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_403.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "F" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_405.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "a" : pygame.transform.scale(pygame.image.load("../data/flooring/wall.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    "G" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_97.png"), ((SCALE, SCALE))),
+    "L" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_376.png"), ((SCALE, SCALE))),
+    "R" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_378.png"), ((SCALE, SCALE))),
+    "T" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_350.png"), ((SCALE, SCALE))),
+    "B" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_404.png"), ((SCALE, SCALE))),
+    "C" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_349.png"), ((SCALE, SCALE))),
+    "D" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_351.png"), ((SCALE, SCALE))),
+    "E" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_403.png"), ((SCALE, SCALE))),
+    "F" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_405.png"), ((SCALE, SCALE))),
+    "a" : pygame.transform.scale(pygame.image.load("../data/flooring/wall.png"), ((SCALE, SCALE))),
     
     #bathroom floor
-    "X" : pygame.transform.scale(pygame.image.load("../data/flooring/bathroom_floor.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    "X" : pygame.transform.scale(pygame.image.load("../data/flooring/bathroom_floor.png"), ((SCALE, SCALE))),
     #bedroom floor
-    "K" : pygame.transform.scale(pygame.image.load("../data/flooring/bedroom_floor.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    "K" : pygame.transform.scale(pygame.image.load("../data/flooring/bedroom_floor.png"), ((SCALE, SCALE))),
     #lounge floor
-    "Z" : pygame.transform.scale(pygame.image.load("../data/flooring/lounge_floor.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    "Z" : pygame.transform.scale(pygame.image.load("../data/flooring/lounge_floor.png"), ((SCALE, SCALE))),
     #white
-    "W" : pygame.transform.scale(pygame.image.load("../data/flooring/white.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "H" : pygame.transform.scale(pygame.image.load("../data/flooring/black.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "Y" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_98.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
-    "V" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_99.png"), ((CONFIG.SCALE, CONFIG.SCALE))), 
+    "W" : pygame.transform.scale(pygame.image.load("../data/flooring/white.png"), ((SCALE, SCALE))),
+    "H" : pygame.transform.scale(pygame.image.load("../data/flooring/black.png"), ((SCALE, SCALE))),
+    "Y" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_98.png"), ((SCALE, SCALE))),
+    "V" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_99.png"), ((SCALE, SCALE))), 
     #grass
-    "P" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_01.png"), ((CONFIG.SCALE, CONFIG.SCALE))), 
-    "S" : pygame.transform.scale(pygame.image.load("../data/flooring/sky.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    "P" : pygame.transform.scale(pygame.image.load("../data/flooring/tile_01.png"), ((SCALE, SCALE))), 
+    "S" : pygame.transform.scale(pygame.image.load("../data/flooring/sky.png"), ((SCALE, SCALE))),
     #pool greens
-    "I" : pygame.transform.scale(pygame.image.load("../data/flooring/pool_green1.png"), ((CONFIG.SCALE, CONFIG.SCALE))), 
-    "J" : pygame.transform.scale(pygame.image.load("../data/flooring/pool_green2.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    "I" : pygame.transform.scale(pygame.image.load("../data/flooring/pool_green1.png"), ((SCALE, SCALE))), 
+    "J" : pygame.transform.scale(pygame.image.load("../data/flooring/pool_green2.png"), ((SCALE, SCALE))),
     #mirror surface 
-    "U" : pygame.transform.scale(pygame.image.load("../data/flooring/mirror_surface.png"), ((CONFIG.SCALE, CONFIG.SCALE))),
+    "U" : pygame.transform.scale(pygame.image.load("../data/flooring/mirror_surface.png"), ((SCALE, SCALE))),
     #BATH
-    "t" : pygame.transform.scale(pygame.image.load("../data/flooring/water.png"), ((CONFIG.SCALE, CONFIG.SCALE)))
+    "t" : pygame.transform.scale(pygame.image.load("../data/flooring/water.png"), ((SCALE, SCALE)))
 
 }
 
@@ -66,7 +78,7 @@ map_tile_image = {
 #resources------ Here we place static game components, imagery etc.
 
 def text_objects(text, font):
-    textSurface=font.render(text, True, CONFIG.Black)
+    textSurface=font.render(text, True, Black)
     return textSurface, textSurface.get_rect()
 
 def button(msg,x,y,w,h,inactive, active, a, b, action=None):
@@ -125,11 +137,11 @@ def game_intro():
         #gameDisplay.fill("../data/topdown-shooter/PNG/Tiles/tile73.png")
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         largeText2=pygame.font.SysFont ("bitstreamverasans", 30)
-        text2=largeText2.render("Lockdown Edition", True, CONFIG.Yellow)
+        text2=largeText2.render("Lockdown Edition", True, Yellow)
         text2 = pygame.transform.rotate(text2, -30)
         
-        text3=largeText2.render("A programme developed using GitHub", True, CONFIG.White)
-        text4=largeText2.render("compiled on ARCHER2 using BASH", True, CONFIG.White)
+        text3=largeText2.render("A programme developed using GitHub", True, White)
+        text4=largeText2.render("compiled on ARCHER2 using BASH", True, White)
 
         
         TextSurf, TextRect = text_objects("The Advanced ", largeText)
@@ -142,8 +154,8 @@ def game_intro():
         gameDisplay.blit(text3, (display_width*0.1, display_height/1.2))
         gameDisplay.blit(text4, (display_width*0.1, display_height/1.1))
         
-        button("Enter!", display_width/2-150, 300, 200, 100, CONFIG.Brown, CONFIG.Bright_green, 764, 360, 0)
-        button("Quit!", display_width/2, 400, 200, 100, CONFIG.Brown, CONFIG.Bright_red, 100, 100, 1)
+        button("Enter!", display_width/2-150, 300, 200, 100, Brown, Bright_green, 764, 360, 0)
+        button("Quit!", display_width/2, 400, 200, 100, Brown, Bright_red, 100, 100, 1)
         
         pygame.display.update()
         clock.tick(15)
@@ -164,12 +176,12 @@ def computer(initial_x, initial_y):
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
-        gameDisplay.fill(CONFIG.White)
+        gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(TextSurf, TextRect)
         gameDisplay.blit(background, (0, 0))
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
-        return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
         
         pygame.display.update()
         clock.tick(15)
@@ -206,7 +218,7 @@ def window(initial_x, initial_y):
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
-        gameDisplay.fill(CONFIG.White)
+        gameDisplay.fill(White)
         render_map(gameDisplay)
         #blit images
         gameDisplay.blit(cloud1, (100, 50))
@@ -230,7 +242,7 @@ def window(initial_x, initial_y):
         
         # gameDisplay.blit(background, (0, 0))
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
-        return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
         
         pygame.display.update()
         clock.tick(15)
@@ -251,12 +263,12 @@ def book(initial_x, initial_y):
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
-        gameDisplay.fill(CONFIG.White)
+        gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(background, (display_width/30, display_height/30))
         gameDisplay.blit(TextSurf, TextRect)
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
-        return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
         
         pygame.display.update()
         clock.tick(15)
@@ -277,13 +289,13 @@ def pool(initial_x, initial_y):
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
-        gameDisplay.fill(CONFIG.White)
+        gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(balls, (600, -100))
         
         gameDisplay.blit(TextSurf, TextRect)
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
-        return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
         
         pygame.display.update()
         clock.tick(15)
@@ -308,7 +320,7 @@ def bath(initial_x, initial_y):
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
-        gameDisplay.fill(CONFIG.White)
+        gameDisplay.fill(White)
         render_map(gameDisplay)
         
         gameDisplay.blit(ducky, (650, 20))
@@ -323,7 +335,7 @@ def bath(initial_x, initial_y):
         # gameDisplay.blit(TextSurf, TextRect)
         # gameDisplay.blit(background, (0, 0))
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
-        return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
         
         pygame.display.update()
         clock.tick(15)
@@ -347,13 +359,13 @@ def mirror(initial_x, initial_y):
         largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
-        gameDisplay.fill(CONFIG.White)
+        gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(background, (0, 0))
         gameDisplay.blit(reflection, (300, 200))
         # gameDisplay.blit(TextSurf, TextRect)
         #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
-        return_button("Return to game", display_width/1.2, 550, 100, 50, CONFIG.Brown, CONFIG.Bright_green, initial_x, initial_y, 0)
+        return_button("Return to game", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
         
         pygame.display.update()
         clock.tick(15)
@@ -365,7 +377,7 @@ def render_map(screen):
             x_pos = 0
             for tile in line:
                 image = map_tile_image[tile]
-                rect = pygame.Rect(x_pos*CONFIG.SCALE, y_pos*CONFIG.SCALE, CONFIG.SCALE,CONFIG.SCALE)
+                rect = pygame.Rect(x_pos*SCALE, y_pos*SCALE, SCALE,SCALE)
                 screen.blit(image, rect)
                 x_pos = x_pos + 1
 
@@ -379,26 +391,14 @@ def load_map(file_name):
                     tiles.append(line[i])
                 map.append(tiles)
             # print(map)
-            
-# def determine_camera(hero):
-#         max_y_position = len(map) - display_height/ CONFIG.SCALE
-#         y_position = (hero.position[1]/ CONFIG.SCALE) - math.ceil(round((display_height/ CONFIG.SCALE) / 2))
-#         if y_position <= max_y_position and y_position >= 0:
-#             camera[1] = hero.position[1]/ CONFIG.SCALE
-#         elif y_position < 0:
-#             camera[1] = 0
-#         else:
-#             camera[1] = max_y_position
-       
-#         print('Camera is '+str(camera[1]))
-#         print('hero is '+str(hero.position[1]/CONFIG.SCALE))
+
         
 class Hero:
     def __init__(self, x_pos, y_pos):
         self.position = [x_pos, y_pos]
         self.image = pygame.image.load("../data/images/player.png")
-        self.image = pygame.transform.scale(self.image, (CONFIG.SCALE, CONFIG.SCALE))
-        self.rect = pygame.Rect(self.position[0], self.position[1], CONFIG.SCALE, CONFIG.SCALE)
+        self.image = pygame.transform.scale(self.image, (SCALE, SCALE))
+        self.rect = pygame.Rect(self.position[0], self.position[1], SCALE, SCALE)
     
     
     def update_position(self, new_position):
@@ -408,7 +408,7 @@ class Hero:
 
     def render(self, screen):
         #self.rect = pygame.Rect(self.position[0]*CONFIG.SCALE, self.position[1]*CONFIG.SCALE-(camera[1]*CONFIG.SCALE),CONFIG.SCALE, CONFIG.SCALE)
-        self.rect = pygame.Rect((self.position[0]), (self.position[1]), CONFIG.SCALE, CONFIG.SCALE)
+        self.rect = pygame.Rect((self.position[0]), (self.position[1]), SCALE, SCALE)
         screen.blit(self.image, self.rect)
         
         
@@ -430,7 +430,7 @@ class TestSprite(pygame.sprite.Sprite):
 
         self.index = 0
         self.image = self.images[self.index]
-        self.rect = pygame.Rect(22*CONFIG.SCALE, 15*CONFIG.SCALE, 64, 64)
+        self.rect = pygame.Rect(22*SCALE, 15*SCALE, 64, 64)
 
     def update(self):
         '''This method iterates through the elements inside self.images and 
@@ -446,8 +446,8 @@ class TestSprite(pygame.sprite.Sprite):
 def furniture(file, tilex, tiley, rotation, scalea, scaleb):
     """load furniture into a specific area"""
     image = pygame.image.load("../data/"+str(file))
-    x=tilex*CONFIG.SCALE
-    y=tiley*CONFIG.SCALE
+    x=tilex*SCALE
+    y=tiley*SCALE
     image = pygame.transform.scale(image, (scalea, scaleb))
     image = pygame.transform.rotate(image, rotation)
     rect = pygame.Rect(x, y, scalea, scaleb)
@@ -498,14 +498,14 @@ def main(a,b):
              #LOCALISED COMMANDS (OBJECT INTERACTION)
              #LOUNGE  ----------
              #Window (2, 0, 0, 33, 27) (3.05, 0, 0, 33, 27)
-                if keys[pygame.K_x] and 3.05*CONFIG.SCALE+27 > x > 2*CONFIG.SCALE and y < 0*CONFIG.SCALE+27:
+                if keys[pygame.K_x] and 3.05*SCALE+27 > x > 2*SCALE and y < 0*SCALE+27:
                     map.clear()
                     window(x,y)
                 else:
                     pass
                 
              #Book 6.5, 6.7, 0, 50, 50
-                if keys[pygame.K_x] and 6.6*CONFIG.SCALE+50 > x > 6.6*CONFIG.SCALE and 6.7*CONFIG.SCALE < y < 6.7*CONFIG.SCALE+50:
+                if keys[pygame.K_x] and 6.6*SCALE+50 > x > 6.6*SCALE and 6.7*SCALE < y < 6.7*SCALE+50:
                     map.clear()
                     book(x,y)
                 else:
@@ -513,7 +513,7 @@ def main(a,b):
              
              #KITCHEN ----------
              #Pool  10, 14.2, 0, 117, 92       9, 15.2, 0, 117, 92
-                if keys[pygame.K_x] and 9*CONFIG.SCALE+117 > x > 9*CONFIG.SCALE and 15.2*CONFIG.SCALE < y < 15.2*CONFIG.SCALE+92:
+                if keys[pygame.K_x] and 9*SCALE+117 > x > 9*SCALE and 15.2*SCALE < y < 15.2*SCALE+92:
                     map.clear()
                     pool(x, y)
                 else:
@@ -521,7 +521,7 @@ def main(a,b):
              
              #BEDROOM ---------- DONE
              #computer  22.8, 0.3, 0, 40, 65
-                if keys[pygame.K_x] and x > 22.8*CONFIG.SCALE and y < 0.31*CONFIG.SCALE+65:
+                if keys[pygame.K_x] and x > 22.8*SCALE and y < 0.31*SCALE+65:
                     map.clear()
                     computer(x, y)
                 else:
@@ -529,13 +529,13 @@ def main(a,b):
                 
             #BATHROOM ---------- DONE
             #Bath 18.3, 16.7, 0, 35, 50       20.8, 16.7, 0, 35, 50)
-                if keys[pygame.K_x] and 20.5*CONFIG.SCALE+35 > x > 20.5*CONFIG.SCALE and 16.5*CONFIG.SCALE < y < 16.5*CONFIG.SCALE+50:
+                if keys[pygame.K_x] and 20.5*SCALE+35 > x > 20.5*SCALE and 16.5*SCALE < y < 16.5*SCALE+50:
                     map.clear()
                     bath(x,y)
                 else:
                     pass
             #Mirror 18.2, 13.3, 0, 34, 54
-                if keys[pygame.K_x] and 18.2*CONFIG.SCALE+34 > x > 18.2*CONFIG.SCALE and 13.3*CONFIG.SCALE < y < 13.3*CONFIG.SCALE+54:
+                if keys[pygame.K_x] and 18.2*SCALE+34 > x > 18.2*SCALE and 13.3*SCALE < y < 13.3*SCALE+54:
                     map.clear()
                     mirror(x,y)
                 else:
@@ -545,45 +545,45 @@ def main(a,b):
         
         #BOUNDARIES -----------------
         #display
-        if int((x+x_change)) < 0 or int((x+x_change)) > (display_width -1-CONFIG.SCALE):
+        if int((x+x_change)) < 0 or int((x+x_change)) > (display_width -1-SCALE):
             x_change=0
-        if int((y+y_change)) < 0 or int((y+y_change)) > (display_height -5-CONFIG.SCALE):
+        if int((y+y_change)) < 0 or int((y+y_change)) > (display_height -5-SCALE):
             y_change=0
         
         #Walls
         #vertical bedroom
-        if  15*CONFIG.SCALE-CONFIG.SCALE < x+x_change < 15*CONFIG.SCALE+10 and y+y_change < 8*CONFIG.SCALE:
+        if  15*SCALE-SCALE < x+x_change < 15*SCALE+10 and y+y_change < 8*SCALE:
             x_change=0
         #horizontal bedroom
-        if  15*CONFIG.SCALE-CONFIG.SCALE < x+x_change and 10*CONFIG.SCALE-CONFIG.SCALE < y+y_change < 10*CONFIG.SCALE:
+        if  15*SCALE-SCALE < x+x_change and 10*SCALE-SCALE < y+y_change < 10*SCALE:
             y_change=0
         #vertical bathroom
-        if  15*CONFIG.SCALE-CONFIG.SCALE < x+x_change < 15*CONFIG.SCALE+10 and y+y_change > 13*CONFIG.SCALE-CONFIG.SCALE:
+        if  15*SCALE-SCALE < x+x_change < 15*SCALE+10 and y+y_change > 13*SCALE-SCALE:
             x_change=0
         #horizontal bathroom 15, 13,
-        if  15.2*CONFIG.SCALE-CONFIG.SCALE < x+x_change < 21.8*CONFIG.SCALE and 13*CONFIG.SCALE-CONFIG.SCALE < y+y_change < 13*CONFIG.SCALE:
+        if  15.2*SCALE-SCALE < x+x_change < 21.8*SCALE and 13*SCALE-SCALE < y+y_change < 13*SCALE:
             y_change=0
         
         #*****   ITEMS   *****
         #LOUNGE
         #tv and cabinets 8.6, 0, 0, 40, 65) (13.3, 0, 0, 40, 65)
-        if  8.8*CONFIG.SCALE-CONFIG.SCALE < x+x_change < 14*CONFIG.SCALE+10 and y+y_change < 2*CONFIG.SCALE:
+        if  8.8*SCALE-SCALE < x+x_change < 14*SCALE+10 and y+y_change < 2*SCALE:
             x_change=0
             y_change=0
         #top sofa 5.5, 4.3, 0, 100, 60)
-        if  5.45*CONFIG.SCALE-CONFIG.SCALE+5 < x+x_change < 5.5*CONFIG.SCALE+92 and 116 < y+y_change < 4.3*CONFIG.SCALE:
+        if  5.45*SCALE-SCALE+5 < x+x_change < 5.5*SCALE+92 and 116 < y+y_change < 4.3*SCALE:
             x_change=0
             y_change=0
         #left sofa 4.5, 6, 0, 40, 90)
-        if  4.5*CONFIG.SCALE-CONFIG.SCALE < x+x_change < 4.5*CONFIG.SCALE+14 and 6*CONFIG.SCALE - CONFIG.SCALE< y+y_change < 6*CONFIG.SCALE+60:
+        if  4.5*SCALE-SCALE < x+x_change < 4.5*SCALE+14 and 6*SCALE - SCALE< y+y_change < 6*SCALE+60:
             x_change=0
             y_change=0
         #right sofa 9.1, 6, 0, 40, 90)
-        if  320-CONFIG.SCALE < x+x_change < 9.1*CONFIG.SCALE+35 and 6*CONFIG.SCALE - CONFIG.SCALE < y+y_change < 6*CONFIG.SCALE+60:
+        if  320-SCALE < x+x_change < 9.1*SCALE+35 and 6*SCALE - SCALE < y+y_change < 6*SCALE+60:
             x_change=0
             y_change=0
         #coffee table  6.5, 6.7, 0, 50, 50)
-        if  6.5*CONFIG.SCALE-CONFIG.SCALE+8 < x+x_change < 6.5*CONFIG.SCALE+48 and 6.7*CONFIG.SCALE - CONFIG.SCALE < y+y_change < 6.7*CONFIG.SCALE+30:
+        if  6.5*SCALE-SCALE+8 < x+x_change < 6.5*SCALE+48 and 6.7*SCALE - SCALE < y+y_change < 6.7*SCALE+30:
             x_change=0
             y_change=0
         #stairs and plants
@@ -656,7 +656,7 @@ def main(a,b):
         #     pass          
         x+=x_change
         y+=y_change
-        gameDisplay.fill(CONFIG.Black)
+        gameDisplay.fill(Black)
         render_map(gameDisplay)
         
         # ---------  LOUNGE  ------------
