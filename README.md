@@ -2,7 +2,7 @@
 A virtual presentation environment that is both a presentation and a game!
 
 This is an old-school style platformer designed for object interaction. The player interacts with the various items available, to "discover" aspects of the presentation.
-For an overview of the game, startup, and information on the riming simulation open the Guide.pdf
+For an overview of the game, startup, and information on the riming simulation open the Game_Guide.pdf
 
 NOTE: Please play locally for now, compilation into single cross-platform executeable via ARCHER2 encountered a bug. Working on a fix. 
 
