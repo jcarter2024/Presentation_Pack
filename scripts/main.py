@@ -5,8 +5,8 @@ try:
     # import os
     # import getopt
     import pygame
-    import numpy as np
     # import time
+    # import numpy as np
     # import CONFIG
     import itertools
     # import numpy as np
