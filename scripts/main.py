@@ -5,6 +5,7 @@ try:
     # import os
     # import getopt
     import pygame
+    import numpy as np
     # import time
     # import CONFIG
     import itertools
@@ -90,7 +91,7 @@ def button(msg,x,y,w,h,inactive, active, a, b, action=None):
             print(action)
             if action <1:
                 main(a,b)
-            elif 1 < action < 2:
+            elif 0.9 < action < 2:
                 pygame.quit()
     else:
         pygame.draw.rect(gameDisplay, inactive, (x, y, w, h))
@@ -152,6 +153,40 @@ def return_button(msg,x,y,w,h,inactive, active, a, b, action=None):
     textSurf, textRect = text_objects(msg, smallText)
     textRect.center = ((x+(w/2), y+(h/2)))
     gameDisplay.blit(textSurf, textRect)
+
+def text_generator(text):
+    tmp = ''
+    for letter in text:
+        tmp += letter
+        # don't pause for spaces
+        if letter != ' ':
+            yield tmp
+            
+class DynamicText(object): #credit to stack overflow 
+    def __init__(self, font, text, pos, color, autoreset=False):
+        self.done = False
+        self.font = font
+        self.text = text
+        self._gen = text_generator(self.text)
+        self.pos = pos
+        self.color=color
+        self.autoreset = autoreset
+        self.update()
+
+    def reset(self):
+        self._gen = text_generator(self.text)
+        self.done = False
+        self.update()
+
+    def update(self):
+        if not self.done:
+            try: self.rendered = self.font.render(next(self._gen), True, self.color) #color
+            except StopIteration: 
+                self.done = True
+                if self.autoreset: self.reset()
+
+    def draw(self, screen):
+        screen.blit(self.rendered, self.pos)
     
 def game_intro(page):
     """ Essential for a good start"""
@@ -193,7 +228,7 @@ def game_intro(page):
             TextSurf2, TextRect2 = text_objects("built on ARCHER2,  ", smalltext)
             TextSurf3, TextRect3 = text_objects("and developed via github.", smalltext)
             TextSurf4, TextRect4 = text_objects("Credit to gathertown for inspiring this presentation format. .", smalltext)
-            TextSurf5, TextRect5 = text_objects("Visit the window to begin...", smalltext)
+            TextSurf5, TextRect5 = text_objects("Visit the lounge window to begin...", smalltext)
             
             TextRect.center = (display_width/2, 100)
             TextRect2.center = (display_width/2, 200)
@@ -222,86 +257,82 @@ def computer(initial_x, initial_y, page):
     background=pygame.transform.scale(background, (display_width, display_height))
     smalltext=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 25)
     intro = True
+    #Page 1
+    p1line1 = DynamicText(smalltext,"Running WRF simulations is an intensive process. With", (75, 98), Green, autoreset = False)
+    p1line2 = DynamicText(smalltext,"supercomputer access a single two-day simulation can be", (75, 128), Green, autoreset = False)
+    p1line3 = DynamicText(smalltext, "conducted within 24 hours at high resolution.", (75, 158),Green, autoreset = False)
+    p1line4 = DynamicText(smalltext,"Currently, this research is limited by the Manchester", (75, 218),Green, autoreset = False)
+    p1line5 = DynamicText(smalltext, " CSF-HPC which is extremely busy and often undergoes", (75, 248),Green, autoreset = False,)
+    p1line6 = DynamicText(smalltext," periods of downtime.", (75, 278),Green, autoreset = False)
+    p1line7 = DynamicText(smalltext, "With the use of Archer2, simulations can be carried out ", (75, 338),Green, autoreset = False)
+    p1line8 = DynamicText(smalltext, "at higher resolutions without a large time penalty. This" ,(75, 368),Green, autoreset = False)
+    p1line9 = DynamicText(smalltext, "will directly impact ISHMAEL simulations by increasing" ,(75, 398), Green,autoreset = False)
+    p1line10 = DynamicText(smalltext, "the amount of ice-spheroids available, creating more" ,(75, 428), Green,autoreset = False)
+    p1line11 = DynamicText(smalltext, "localised feedback to the riming process..." ,(75, 458), Green,autoreset = False)
+    
+    #page 2
+    p2line1 = DynamicText(smalltext, "...Archer will provide a crucial second platform to " ,(75, 98), Green,autoreset = False)
+    p2line2 = DynamicText(smalltext, "conduct simulations,not only broadening the availability of  " ,(75, 128),Green, autoreset = False)
+    p2line3 = DynamicText(smalltext, "simulation time, but also providing an important safety net" ,(75, 158),Green, autoreset = False)
+    p2line4 = DynamicText(smalltext, "to combat HPC downtime  ", (75, 188), Green, autoreset = False)
+    p2line5 = DynamicText(smalltext, "Go to the desk to hear more about BASH " ,(75, 438),Green, autoreset = False)
+
+    #Page 2
+    
     while intro:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 pygame.quit()
-                
-        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
-        
+                        
         gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(background, (0, 0))
+        
         if page ==1:            
-            TextSurf,  TextRect = text_objects("Running WRF simulations is an intensive process. With ", smalltext)
-            TextSurf1,  TextRect1 = text_objects("supercomputer access a single two-day simulation ", smalltext)
-            TextSurf2,  TextRect2 = text_objects("can be conducted within 24 hours at high resolution.  ", smalltext)
-            TextSurf3,  TextRect3 = text_objects("Currently, this research is limited by the Manchester", smalltext)
-            TextSurf4,  TextRect4 = text_objects("CSF-HPC which is extremely busy and often undergoes . ", smalltext)
-            TextSurf5,  TextRect5 = text_objects(" periods of downtime. With the use of Archer2 simulations", smalltext)
-            TextSurf6,  TextRect6 = text_objects("can be carried out at higher resolutions without a large", smalltext)
-            TextSurf7,  TextRect7 = text_objects(" time penalty.  This will directly impact ISHMAEL simulations", smalltext)
-            TextSurf8,  TextRect8 = text_objects("by increasing the amount of ice-spheroids available, creating", smalltext)
-
-            
-            TextRect.center = (display_width/2, 210)
-            TextRect1.center = (display_width/2, 240)
-            TextRect2.center = (display_width/2, 270)
-            TextRect3.center = (display_width/2, 300)
-            TextRect4.center = (display_width/2, 330)
-            TextRect5.center = (display_width/2, 360)
-            TextRect6.center = (display_width/2, 390)
-            TextRect7.center = (display_width/2, 420)
-            TextRect8.center = (display_width/2, 450)
-            
-
-            
-            gameDisplay.blit(TextSurf, TextRect)
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect7)
-            gameDisplay.blit(TextSurf8, TextRect8)
-    
-
+            p1line1.draw(gameDisplay)
+            p1line1.update()
+            p1line2.draw(gameDisplay)
+            p1line2.update()
+            p1line3.draw(gameDisplay)
+            p1line3.update()
+            p1line4.draw(gameDisplay)
+            p1line4.update()
+            p1line5.draw(gameDisplay)
+            p1line5.update()
+            p1line6.draw(gameDisplay)
+            p1line6.update()
+            p1line7.draw(gameDisplay)
+            p1line7.update()
+            p1line8.draw(gameDisplay)
+            p1line8.update()
+            p1line9.draw(gameDisplay)
+            p1line9.update()
+            p1line10.draw(gameDisplay)
+            p1line10.update()
+            p1line11.draw(gameDisplay)
+            p1line11.update()
             nextpage("Next page", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 6)
         elif page==2:
-            TextSurf1,  TextRect1 = text_objects(" more feedback to the riming process due to ", smalltext)
-            TextSurf2,  TextRect2 = text_objects(" localised environmental changes. Archer will ", smalltext)
-            TextSurf3,  TextRect3 = text_objects("provide a crucial second platform to conduct simulations ", smalltext)
-            TextSurf4,  TextRect4 = text_objects("not only broadening the availability of simulation time, but ", smalltext)
-            TextSurf5,  TextRect5 = text_objects("also providing an important safety net to combat HPC downtime" , smalltext)
-            TextSurf6,  TextRect6= text_objects("Go to the desk to hear more about BASH", smalltext)
-
-
-    
-            TextRect1.center = (display_width/2, 210)
-            TextRect2.center = (display_width/2, 240)
-            TextRect3.center = (display_width/2, 270)
-            TextRect4.center = (display_width/2, 300)
-            TextRect5.center = (display_width/2, 330)
-            TextRect6.center = (display_width/2, 360)
-
-
-
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-
+            p2line1.draw(gameDisplay)
+            p2line1.update()
+            p2line2.draw(gameDisplay)
+            p2line2.update()
+            p2line3.draw(gameDisplay)
+            p2line3.update()
+            p2line4.draw(gameDisplay)
+            p2line4.update()
+            p2line5.draw(gameDisplay)
+            p2line5.update()
             return_button("Return to game", display_width/1.2, 500, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
    
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(50)
 
 def window(initial_x, initial_y, page):
     """ interaction with a computer """
     load_map("window")
+    pygame.time.set_timer(pygame.USEREVENT, 200)
+    clock.tick(2)
     #clouds
     cloud1 = pygame.image.load("../data/images/screens/window/cloud4.png").convert_alpha()
     cloud2 = pygame.image.load("../data/images/screens/window/cloud5.png").convert_alpha()
@@ -311,6 +342,8 @@ def window(initial_x, initial_y, page):
     tree2 = pygame.image.load("../data/images/screens/window/tree2.png").convert_alpha()
     #castle
     castle = pygame.image.load("../data/images/screens/window/castle.png").convert_alpha()
+    #crystal
+    crystal = pygame.image.load("../data/images/screens/window/crystal.png").convert_alpha()
     
     cloud1=pygame.transform.scale(cloud1, (int(228/2.5), int(124/2.5)))
     cloud2=pygame.transform.scale(cloud2, (int(238/1.5), int(135/1.5)))
@@ -320,15 +353,44 @@ def window(initial_x, initial_y, page):
     tree1=pygame.transform.scale(tree1, (int(129/4), int(230/4)))
     tree2=pygame.transform.scale(tree2, (int(106/4), int(241/4)))
     castle=pygame.transform.scale(castle, (int(204/4), int(182/4)))
-    smalltext=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 25)
+    crystal=pygame.transform.scale(crystal, (int(726/6), int(1018/6)))
     
+    smalltext=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 25)
+    verysmalltext=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 18)
+    
+    box=pygame.image.load("../data/flooring/white_transparent.png").convert_alpha()
+    box1=pygame.transform.scale(box, (353, 255))
+    box2=pygame.transform.scale(box, (353, 290))
+    largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
+    #Page 1
+    p1line1 = DynamicText(smalltext, "Though clouds can exist on the kilometre scale, they consist ", (40, 68), Black, autoreset=False)
+    p1line2 = DynamicText(smalltext, "entirely of small particles that occupy the microscale, typically", (40,98),Black, autoreset=False)
+    p1line3 = DynamicText(smalltext, "growing no larger than a few millimetres. These particles each ",(40, 128),Black, autoreset=False)
+    p1line4 = DynamicText(smalltext, "have unique qualities that are generated during formation and ", (40, 158),Black, autoreset=False)
+    p1line5 = DynamicText(smalltext, "are built upon by interactions with their local environment.", (40, 188),Black, autoreset=False)
+    p1line6 = DynamicText(smalltext, "Capturing the consequences of those interactions is a key", (40, 328),Black, autoreset=False)
+    p1line7 = DynamicText(smalltext, "challenge for weather forecasting, as the accuracy of forecasts ", (40, 358),Black, autoreset=False)
+    p1line8 = DynamicText(smalltext, "depends on a computational model’s ability to correctly predict ", (40, 388), Black,autoreset=False)
+    p1line9 = DynamicText(smalltext, "the interactions of hundreds of millions of particles.",(40, 418),Black, autoreset=False)
+    p1line10 = DynamicText(smalltext, "One important subset of these particles is cloud ice.",(40, 458),Black, autoreset=False)
+    p1line11 = DynamicText(verysmalltext, "A single rimed plate-like crystal, Rango et al.,(2003)",(160, 540),Black, autoreset=False)
+    #Page2
+    p2line1 = DynamicText(smalltext, "Unlike liquid droplets, ice can form in a multitude of shapes, ", (40, 68),Black, autoreset=False)
+    p2line2 = DynamicText(smalltext, "from stellar crystals to bullets, and this shape affects the ", (40, 98),Black, autoreset=False)
+    p2line3 = DynamicText(smalltext, "crystal’s ability to interact with other crystals. It may become", (40, 128),Black, autoreset=False)
+    p2line4 = DynamicText(smalltext, "more likely to fracture, generating reflective ice-shards, or it ", (40, 158),Black, autoreset=False)
+    p2line5 = DynamicText(smalltext, "may aggregate to other crystals more readily, creating large flakes.", (40, 188),Black, autoreset=False)
+    p2line6 = DynamicText(smalltext, "My research examines how models reproduce the riming process, an", (40, 358),Black, autoreset=False)
+    p2line7 = DynamicText(smalltext, "interaction between supercooled liquid water and cloud ice.", (40, 388),Black, autoreset=False)
+    p2line8 = DynamicText(smalltext, "Head to the Globe to learn about weather models and simulated ice.", (40, 458),Black, autoreset=False)
     intro = True
     while intro:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 pygame.quit()
+            # if event.type == pygame.USEREVENT: message.update()
                 
-        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
+        
         TextSurf, TextRect = text_objects("I am a computer ", largeText)
         
         gameDisplay.fill(White)
@@ -350,190 +412,188 @@ def window(initial_x, initial_y, page):
         gameDisplay.blit(tree2, (15*32, 14.5*32))
         gameDisplay.blit(tree2, (6*32, 16.5*32))
         gameDisplay.blit(castle, (22.4*32, 14.6*32))
+        gameDisplay.blit(box1, (32,32))
+        gameDisplay.blit(box1, (416,32))
+        gameDisplay.blit(box2, (32,320))
+        gameDisplay.blit(box2, (416,320))
         
-        if page ==1:            
-            TextSurf,  TextRect = text_objects("Though clouds can exist on the kilometre scale, they consist entirely", smalltext)
-            TextSurf1,  TextRect1 = text_objects("of small particles that occupy the microscale, that ", smalltext)
-            TextSurf2,  TextRect2 = text_objects("typically grow no larger than a few millimetres.  ", smalltext)
-            TextSurf3,  TextRect3 = text_objects("These particles each have unique qualities that are ", smalltext)
-            TextSurf4,  TextRect4 = text_objects("generated during formation and are built upon by", smalltext)
-            TextSurf5,  TextRect5 = text_objects("interactions with their local environment. Capturing", smalltext)
-            TextSurf6,  TextRect6 = text_objects("the consequences of those interactions is a key", smalltext)
-            TextSurf7,  TextRect7 = text_objects("challenge for weather forecasting, as the accuracy of", smalltext)
-            TextSurf8,  TextRect8 = text_objects("forecasts depends on a computational model’s ability", smalltext)
-            TextSurf9,  TextRect9 = text_objects("to correctly predict the interactions of hundreds of", smalltext)
-            TextSurf10,  TextRect10 = text_objects("millions of particles.", smalltext)
-            TextSurf11,  TextRect11 = text_objects("One important subset of these particles is cloud ice", smalltext)
+        gameDisplay.blit(crystal, (20,478))
+        
+        
+        if page ==1:  
+            p1line1.draw(gameDisplay)
+            p1line1.update()
+            p1line2.draw(gameDisplay)
+            p1line2.update()
+            p1line3.draw(gameDisplay)
+            p1line3.update()
+            p1line4.draw(gameDisplay)
+            p1line4.update()
+            p1line5.draw(gameDisplay)
+            p1line5.update()
+            p1line6.draw(gameDisplay)
+            p1line6.update()
+            p1line7.draw(gameDisplay)
+            p1line7.update()
+            p1line8.draw(gameDisplay)
+            p1line8.update()
+            p1line9.draw(gameDisplay)
+            p1line9.update()
+            p1line10.draw(gameDisplay)
+            p1line10.update()
+            p1line11.draw(gameDisplay)
+            p1line11.update()
             
-            TextRect.center = (display_width/2, 50)
-            TextRect1.center = (display_width/2, 100)
-            TextRect2.center = (display_width/2, 150)
-            TextRect3.center = (display_width/2, 200)
-            TextRect4.center = (display_width/2, 250)
-            TextRect5.center = (display_width/2, 300)
-            TextRect6.center = (display_width/2, 350)
-            TextRect7.center = (display_width/2, 400)
-            TextRect8.center = (display_width/2, 450)
-            TextRect9.center = (display_width/2, 500)
-            TextRect10.center = (display_width/2, 550)
-            TextRect11.center = (display_width/2, 600)
-
-            
-            gameDisplay.blit(TextSurf, TextRect)
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect7)
-            gameDisplay.blit(TextSurf8, TextRect8)
-            gameDisplay.blit(TextSurf9, TextRect9)
-            gameDisplay.blit(TextSurf10, TextRect10)
-            gameDisplay.blit(TextSurf11, TextRect11)
-
             nextpage("Next page", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 2)
         elif page==2:
-            TextSurf,  TextRect = text_objects("Unlike liquid droplets, ice can form in a multitude", smalltext)
-            TextSurf1,  TextRect1 = text_objects("of shapes from stellar crystals to bullets, and this", smalltext)
-            TextSurf2,  TextRect2 = text_objects("shape affects the crystal’s ability to interact with", smalltext)
-            TextSurf3,  TextRect3 = text_objects("other crystals. It may become more likely to fracture", smalltext)
-            TextSurf4,  TextRect4 = text_objects("generating reflective ice-shards, or it may aggregate ", smalltext)
-            TextSurf5,  TextRect5 = text_objects("to other crystals more readily, creating large ", smalltext)
-            TextSurf6,  TextRect6 = text_objects("snowflakes. My research examines how models reproduce ", smalltext)
-            TextSurf7,  TextRect7 = text_objects("the riming process, an interaction between supercooled", smalltext)
-            TextSurf8,  TextRect8 = text_objects("liquid water and cloud ice", smalltext)
-            TextSurf9,  TextRect9 = text_objects("", smalltext)
-            TextSurf10,  TextRect10 = text_objects("Head to the Globe to learn more about weather ", smalltext)
-            TextSurf11,  TextRect11 = text_objects("models and simulated ice. ", smalltext)
-            
-            TextRect.center = (display_width/2, 50)
-            TextRect1.center = (display_width/2, 100)
-            TextRect2.center = (display_width/2, 150)
-            TextRect3.center = (display_width/2, 200)
-            TextRect4.center = (display_width/2, 250)
-            TextRect5.center = (display_width/2, 300)
-            TextRect6.center = (display_width/2, 350)
-            TextRect7.center = (display_width/2, 400)
-            TextRect8.center = (display_width/2, 450)
-            TextRect9.center = (display_width/2, 500)
-            TextRect10.center = (display_width/2, 550)
-            TextRect11.center = (display_width/2, 600)
-
-            
-            gameDisplay.blit(TextSurf, TextRect)
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect7)
-            gameDisplay.blit(TextSurf8, TextRect8)
-            gameDisplay.blit(TextSurf9, TextRect9)
-            gameDisplay.blit(TextSurf10, TextRect10)
-            gameDisplay.blit(TextSurf11, TextRect11)
+            p2line1.draw(gameDisplay)
+            p2line1.update()
+            p2line2.draw(gameDisplay)
+            p2line2.update()
+            p2line3.draw(gameDisplay)
+            p2line3.update()
+            p2line4.draw(gameDisplay)
+            p2line4.update()
+            p2line5.draw(gameDisplay)
+            p2line5.update()
+            p2line6.draw(gameDisplay)
+            p2line6.update()
+            p2line7.draw(gameDisplay)
+            p2line7.update()
+            p2line8.draw(gameDisplay)
+            p2line8.update()
+            p1line11.draw(gameDisplay)
+            p1line11.update()
+     
             return_button("Return to game", display_width/1.2, 500, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
             
         
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(55)
 
 def book(initial_x, initial_y, page):
     """ interaction with a computer """
     load_map("book")
     background = pygame.image.load("../data/images/screens/book/newspaper.png").convert_alpha()
     background=pygame.transform.scale(background, (int(display_width/1.1),int(display_height/1.1)))
+    bl = pygame.image.load("../data/images/screens/book/blizzard.png").convert_alpha()
+    bl=pygame.transform.scale(bl, (int(2527/7),int(1687/7)))
     # background=pygame.transform.rotate(background, 4)
     smalltext=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 25)
+    verysmalltext=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 18)
     intro = True
+    p1line1 = DynamicText(smalltext,"To compare ISHMAEL and conventional schemes, a winter ", (60, 168), Black, autoreset = False)
+    p1line2 = DynamicText(smalltext,"storm that impacted the north-east United States in", (60, 188), Black, autoreset = False)
+    p1line3 = DynamicText(smalltext, "February 2013 was simulated. The storm brought record ,", (60, 208),Black, autoreset = False)
+    p1line4 = DynamicText(smalltext, "snowfall to several areas, causing two states to declare ", (60, 228),Black, autoreset = False,)
+    p1line5 = DynamicText(smalltext,"a state of emergency. It was particularly devastating to.", (60, 248),Black, autoreset = False)
+    p1line6 = DynamicText(smalltext, "infrastructure, aviation and property", (60, 268),Black, autoreset = False)
+    p1line7 = DynamicText(smalltext, "This storm was chosen due to its well-defined phases" ,(60, 288),Black, autoreset = False)
+    p1line8 = DynamicText(smalltext, "of precipitation, which brought snow and rain initially" ,(60, 308), Black,autoreset = False)
+    p1line9 = DynamicText(smalltext, "followed by a period of intense riming, and concluded " ,(60, 328), Black,autoreset = False)
+    p1line10 = DynamicText(smalltext, "by snowy aggregates ",(60, 348), Black,autoreset = False)
+    p1line11 = DynamicText(verysmalltext, "Electricity cut off and Vehicles snowed in! ",(30, 530), Black,autoreset = False)
+    p1line12 = DynamicText(verysmalltext, "The 2013 Storm hits Billerica, Massachusetts",(30, 550), Black,autoreset = False)
+    #Page 2by snowy aggregates. 
+    p2line1 = DynamicText(smalltext,"Radar measurements indicate the cloud particle population aloft, ", (60, 168), Black, autoreset = False)
+    p2line2 = DynamicText(smalltext,"whilst on-the-ground recordings of crystal habit took place at", (60, 188), Black, autoreset = False)
+    p2line3 = DynamicText(smalltext, "Stony Brook University, Long Island.", (60, 208),Black, autoreset = False)
+    p2line4 = DynamicText(smalltext, "The ISHMAEL model was compared to its predecessor and ", (60, 248),Black, autoreset = False,)
+    p2line5 = DynamicText(smalltext,"verified with these observational datasets.", (60, 268),Black, autoreset = False)
+    p2line6 = DynamicText(smalltext, "Head to the computer to learn how this week's course will", (60, 308),Black, autoreset = False)
+    p2line7 = DynamicText(smalltext, "impact my future research" ,(60, 328),Black, autoreset = False)
+    
     while intro:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 pygame.quit()
                 
-        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
-        
         gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(background, (display_width/30, display_height/30))
+        gameDisplay.blit(bl, (380,350))
         if page ==1:            
-            TextSurf,  TextRect = text_objects("To compare ISHMAEL and conventional schemes, a winter ", smalltext)
-            TextSurf1,  TextRect1 = text_objects("storm that impacted the north east united states in", smalltext)
-            TextSurf2,  TextRect2 = text_objects("February 2013 was simulated. The storm brought record ", smalltext)
-            TextSurf3,  TextRect3 = text_objects("snowfall to several areas, causing two states to declare ", smalltext)
-            TextSurf4,  TextRect4 = text_objects("a state of emergency. The storm was particularly devastating to", smalltext)
-            TextSurf5,  TextRect5 = text_objects("infrastructure, aviation and property", smalltext)
-            TextSurf6,  TextRect6 = text_objects("This storm was chosen due to its well-defined phases", smalltext)
-            TextSurf7,  TextRect7 = text_objects("of precipitation, which brought snow and rain initially,", smalltext)
-            TextSurf8,  TextRect8 = text_objects("followed by a period of intense riming, and concluded ", smalltext)
-
-            
-            TextRect.center = (display_width/2, 210)
-            TextRect1.center = (display_width/2, 240)
-            TextRect2.center = (display_width/2, 270)
-            TextRect3.center = (display_width/2, 300)
-            TextRect4.center = (display_width/2, 330)
-            TextRect5.center = (display_width/2, 360)
-            TextRect6.center = (display_width/2, 390)
-            TextRect7.center = (display_width/2, 420)
-            TextRect8.center = (display_width/2, 450)
-            
-
-            
-            gameDisplay.blit(TextSurf, TextRect)
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect7)
-            gameDisplay.blit(TextSurf8, TextRect8)
-    
+            p1line1.draw(gameDisplay)
+            p1line1.update()
+            p1line2.draw(gameDisplay)
+            p1line2.update()
+            p1line3.draw(gameDisplay)
+            p1line3.update()
+            p1line4.draw(gameDisplay)
+            p1line4.update()
+            p1line5.draw(gameDisplay)
+            p1line5.update()
+            p1line6.draw(gameDisplay)
+            p1line6.update()
+            p1line7.draw(gameDisplay)
+            p1line7.update()
+            p1line8.draw(gameDisplay)
+            p1line8.update()
+            p1line9.draw(gameDisplay)
+            p1line9.update()
+            p1line10.draw(gameDisplay)
+            p1line10.update()
+            p1line11.draw(gameDisplay)
+            p1line11.update()
+            p1line12.draw(gameDisplay)
+            p1line12.update()
+        
 
             nextpage("Next page", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 5)
         elif page==2:
-            TextSurf1,  TextRect1 = text_objects("by snowy aggregates. Radar measurements indicate", smalltext)
-            TextSurf2,  TextRect2 = text_objects("the cloud particle population aloft, whilst on-the-ground ", smalltext)
-            TextSurf3,  TextRect3 = text_objects("recordings of crystal habit took place at Stony Brook University", smalltext)
-            TextSurf4,  TextRect4 = text_objects("Long Island", smalltext)
-            TextSurf5,  TextRect5 = text_objects("The ISHMAEL model was compared to its predecessor" , smalltext)
-            TextSurf6,  TextRect6= text_objects("and verified with these observations", smalltext)
-            TextSurf7,  TextRect7 = text_objects("Head to the computer to learn how this week's course will ", smalltext)
-            TextSurf8,  TextRect8 = text_objects("impact my future research", smalltext)
-
-    
-            TextRect1.center = (display_width/2, 210)
-            TextRect2.center = (display_width/2, 240)
-            TextRect3.center = (display_width/2, 270)
-            TextRect4.center = (display_width/2, 300)
-            TextRect5.center = (display_width/2, 330)
-            TextRect6.center = (display_width/2, 360)
-            TextRect7.center = (display_width/2, 390)
-            TextRect8.center = (display_width/2, 420)
-
-
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect7)
-            gameDisplay.blit(TextSurf8, TextRect8)
-
+            p2line1.draw(gameDisplay)
+            p2line1.update()
+            p2line2.draw(gameDisplay)
+            p2line2.update()
+            p2line3.draw(gameDisplay)
+            p2line3.update()
+            p2line4.draw(gameDisplay)
+            p2line4.update()
+            p2line5.draw(gameDisplay)
+            p2line5.update()
+            p2line6.draw(gameDisplay)
+            p2line6.update()
+            p2line7.draw(gameDisplay)
+            p2line7.update()
+            p1line12.draw(gameDisplay)
+            p1line12.update()
 
             return_button("Return to game", display_width/1.2, 500, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
         
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(55)
         
 def pool(initial_x, initial_y, page):
     """ interaction with a computer """
     load_map("pool")
     smalltext=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 25)
     intro = True
+    #Page 1
+    p1line1 = DynamicText(smalltext,"Liquid water can exist at temperatures as low as", (60, 128), Black, autoreset = False)
+    p1line2 = DynamicText(smalltext,"-40 degrees Celsius in a stable enough environment.", (50, 158), Black, autoreset = False)
+    p1line3 = DynamicText(smalltext, "Often, ice that forms at the top of clouds gains mass", (60, 188),Black, autoreset = False)
+    p1line4 = DynamicText(smalltext, "through a field of supercooled droplets. On impact", (120, 218),Black, autoreset = False,)
+    p1line5 = DynamicText(smalltext,"droplets accrete to - or rime, the surface of the ice.", (140, 248),Black, autoreset = False)
+    p1line6 = DynamicText(smalltext, "immediately freezing and contributing a further mass gain", (160, 278),Black, autoreset = False)
+    p1line7 = DynamicText(smalltext, "Riming has several interesting aspects, for" ,(160, 338),Black, autoreset = False)
+    p1line8 = DynamicText(smalltext, "example, it depletes the cloud’s droplet and ice" ,(160, 368), Black,autoreset = False)
+    p1line9 = DynamicText(smalltext, "population, reducing overall cloud lifetime. It also  " ,(160, 398), Black,autoreset = False)
+    p1line10 = DynamicText(smalltext, "alters the crystal shape, distorting the aerodynamic",(160, 428), Black,autoreset = False)
+    p1line11 = DynamicText(smalltext,"profile of the ice and further increasing fall speed",(160, 458), Black,autoreset = False)
+    #Page 2
+    p2line1 = DynamicText(smalltext,"A simulation of riming is provided at this link:", (60, 128), Black, autoreset = False)
+    p2line2 = DynamicText(smalltext,"https://glowscript.org/ using file:.", (60, 158), Black, autoreset = False)
+    p2line3 = DynamicText(smalltext, "It is not possible to capture the exact shapes of crystals", (60, 228),Black, autoreset = False)
+    p2line4 = DynamicText(smalltext, "but the ISHMAEL scheme can parametrise them by representing", (120, 258),Black, autoreset = False,)
+    p2line5 = DynamicText(smalltext,"geometries with spheroids. This inclusion allows", (140, 288),Black, autoreset = False)
+    p2line6 = DynamicText(smalltext, "the riming process to be more closely tied to the size", (160, 318),Black, autoreset = False)
+    p2line7 = DynamicText(smalltext, "evolution of the ice field. Examinations of the ISHMAEL" ,(160, 348),Black, autoreset = False)
+    p2line8 = DynamicText(smalltext, "model indicate that it more accurately captures the" ,(160, 378), Black,autoreset = False)
+    p2line9 = DynamicText(smalltext, "scale of riming than traditional models, and can produce" ,(160, 408), Black,autoreset = False)
+    p2line10 = DynamicText(smalltext, "a more spatially accurate precipitation forecast",(160, 438), Black,autoreset = False)
+    p2line11 = DynamicText(smalltext,"To read more about the case study, visit the coffee table",(160, 468), Black,autoreset = False)
+  
+    
     while intro:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
@@ -542,101 +602,63 @@ def pool(initial_x, initial_y, page):
         balls = pygame.image.load("../data/images/kitchen/balls.png").convert_alpha()
         balls=pygame.transform.scale(balls, (int(40*10), int(35*10)))
         
-        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
-        
-        
         gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(balls, (600, -100))
         
         
-        if page ==1:            
-            TextSurf,  TextRect = text_objects("Liquid water can exist at temperatures as low as", smalltext)
-            TextSurf1,  TextRect1 = text_objects("-40 degrees Celsius in a stable enough environment.", smalltext)
-            TextSurf2,  TextRect2 = text_objects("Often, ice that forms at the top of clouds gains mass ", smalltext)
-            TextSurf3,  TextRect3 = text_objects("at a faster rate than droplets, causing it to descend", smalltext)
-            TextSurf4,  TextRect4 = text_objects("through a field of supercooled droplets. On impact", smalltext)
-            TextSurf5,  TextRect5 = text_objects("droplets accrete to - or rime, the surface of the ice", smalltext)
-            TextSurf6,  TextRect6 = text_objects("immediately freezing and contributing a further mass", smalltext)
-            TextSurf7,  TextRect7 = text_objects("gain. Riming has several interesting aspects, for", smalltext)
-            TextSurf8,  TextRect8 = text_objects("example, it depletes the cloud’s droplet and ice", smalltext)
-            TextSurf9,  TextRect9 = text_objects("population, reducing overall cloud lifetime. It also ", smalltext)
-            TextSurf10,  TextRect10 = text_objects("alters the crystal shape, distorting the aerodynamic", smalltext)
-            TextSurf11,  TextRect11 = text_objects("profile of the ice and further increasing fall speed", smalltext)
-            
-            TextRect.center = (display_width/2-100, 120)
-            TextRect1.center = (display_width/2-100, 150)
-            TextRect2.center = (display_width/2-100, 180)
-            TextRect3.center = (display_width/2, 210)
-            TextRect4.center = (display_width/2, 240)
-            TextRect5.center = (display_width/2, 270)
-            TextRect6.center = (display_width/2, 300)
-            TextRect7.center = (display_width/2, 330)
-            TextRect8.center = (display_width/2, 360)
-            TextRect9.center = (display_width/2, 390)
-            TextRect10.center = (display_width/2, 420)
-            TextRect11.center = (display_width/2, 450)
-
-            
-            gameDisplay.blit(TextSurf, TextRect)
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect7)
-            gameDisplay.blit(TextSurf8, TextRect8)
-            gameDisplay.blit(TextSurf9, TextRect9)
-            gameDisplay.blit(TextSurf10, TextRect10)
-            gameDisplay.blit(TextSurf11, TextRect11)
+        if page ==1: 
+            p1line1.draw(gameDisplay)
+            p1line1.update()
+            p1line2.draw(gameDisplay)
+            p1line2.update()
+            p1line3.draw(gameDisplay)
+            p1line3.update()
+            p1line4.draw(gameDisplay)
+            p1line4.update()
+            p1line5.draw(gameDisplay)
+            p1line5.update()
+            p1line6.draw(gameDisplay)
+            p1line6.update()
+            p1line7.draw(gameDisplay)
+            p1line7.update()
+            p1line8.draw(gameDisplay)
+            p1line8.update()
+            p1line9.draw(gameDisplay)
+            p1line9.update()
+            p1line10.draw(gameDisplay)
+            p1line10.update()
+            p1line11.draw(gameDisplay)
+            p1line11.update()
 
             nextpage("Next page", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 4)
         elif page==2:
-            TextSurf,  TextRect = text_objects("A simulation of riming is provided at this link:", smalltext)
-            TextSurf1,  TextRect1 = text_objects("https://glowscript.org/ using file:" , smalltext)
-            TextSurf2,  TextRect2 = text_objects("It is not possible to capture the exact shapes of crystals", smalltext)
-            TextSurf3,  TextRect3 = text_objects("but the ISHMAEL scheme can parametrise them by representing", smalltext)
-            TextSurf4,  TextRect4 = text_objects("geometries with spheroids. This inclusion allows ", smalltext)
-            TextSurf5,  TextRect5 = text_objects("the riming process to be more closely tied to the size", smalltext)
-            TextSurf6,  TextRect6 = text_objects("evolution of the ice field. Examinations of the ISHMAEL ", smalltext)
-            TextSurf7,  TextRect7 = text_objects("model indicate that it more accurately captures the", smalltext)
-            TextSurf8,  TextRect8 = text_objects("scale of riming than traditional models, and can produce ", smalltext)
-            TextSurf9,  TextRect9 = text_objects("a more accurate precipitation forecast when simulating", smalltext)
-            TextSurf10,  TextRect10 = text_objects("a more accurate precipitation forecast when simulating", smalltext)
-            TextSurf11,  TextRect11 = text_objects("To read more about the case study, visit the coffee table.", smalltext)
+            p2line1.draw(gameDisplay)
+            p2line1.update()
+            p2line2.draw(gameDisplay)
+            p2line2.update()
+            p2line3.draw(gameDisplay)
+            p2line3.update()
+            p2line4.draw(gameDisplay)
+            p2line4.update()
+            p2line5.draw(gameDisplay)
+            p2line5.update()
+            p2line6.draw(gameDisplay)
+            p2line6.update()
+            p2line7.draw(gameDisplay)
+            p2line7.update()
+            p2line8.draw(gameDisplay)
+            p2line8.update()
+            p2line9.draw(gameDisplay)
+            p2line9.update()
+            p2line10.draw(gameDisplay)
+            p2line10.update()
+            p2line11.draw(gameDisplay)
+            p2line11.update()
             
-            TextRect.center = (display_width/2-100, 120)
-            TextRect1.center = (display_width/2-100, 150)
-            TextRect2.center = (display_width/2-100, 180)
-            TextRect3.center = (display_width/2, 210)
-            TextRect4.center = (display_width/2, 240)
-            TextRect5.center = (display_width/2, 270)
-            TextRect6.center = (display_width/2, 300)
-            TextRect7.center = (display_width/2, 330)
-            TextRect8.center = (display_width/2, 360)
-            TextRect9.center = (display_width/2, 390)
-            TextRect10.center = (display_width/2, 420)
-            TextRect11.center = (display_width/2, 450)
- 
-
-            
-            gameDisplay.blit(TextSurf, TextRect)
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect7)
-            gameDisplay.blit(TextSurf8, TextRect8)
-            gameDisplay.blit(TextSurf9, TextRect9)
-            gameDisplay.blit(TextSurf10, TextRect10)
-            gameDisplay.blit(TextSurf11, TextRect11)
-
             return_button("Return to game", display_width/1.2, 500, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(55)
     
 def bath(initial_x, initial_y, page):
     """ interaction with a computer """
@@ -648,15 +670,32 @@ def bath(initial_x, initial_y, page):
     bubble1 = pygame.transform.scale(bubble, (int(70), int(70)))
     bubble2 = pygame.transform.scale(bubble, (int(40), int(40)))
     
-    
-    
     intro = True
+    #page 1
+    p1line1 = DynamicText(smalltext,"The GIT component of this course will ", (60, 68), Black, autoreset = False)
+    p1line2 = DynamicText(smalltext,"allow for my research tools to be structured,", (50, 98), Black, autoreset = False)
+    p1line3 = DynamicText(smalltext, " stored and developed in a cohesive manner.", (60, 128),Black, autoreset = False)
+    p1line4 = DynamicText(smalltext, "I often develop lengthy code, but have been unwilling ", (90, 188),Black, autoreset = False)
+    p1line5 = DynamicText(smalltext, "to use GIT due to its perceived complexity. Now code", (120, 218),Black, autoreset = False,)
+    p1line6 = DynamicText(smalltext,"can be safely backed up, and shared more easily ", (140, 248),Black, autoreset = False)
+    p1line7 = DynamicText(smalltext, "for collaboration. ", (160, 278),Black, autoreset = False)
+    p1line8 = DynamicText(smalltext, "As I work on and develop the ISHMAEL code, it will be" ,(160, 368),Black, autoreset = False)
+    p1line8 = DynamicText(smalltext, "essential to have records that can be shared with", (160, 398),Black, autoreset = False)
+    p1line9 = DynamicText(smalltext, "its authors across the world. Most importantly it will " ,(160, 428), Black,autoreset = False)
+    p1line10 = DynamicText(smalltext, "protect against the main source of error, my own edits... " ,(190, 458), Black,autoreset = False)
+    #Page 2
+    p2line1 = DynamicText(smalltext,"...that break the code in ever more confusing", (90, 128), Black, autoreset = False)
+    p2line2 = DynamicText(smalltext," and deceptive ways.", (90, 158), Black, autoreset = False)
+    p2line3 = DynamicText(smalltext,"Note: This entire game was developed using Git!", (160, 308), Black, autoreset = False)
+
+    p2line4 = DynamicText(smalltext, "Head to the mirror to 'reflect' on this presentation", (190, 458),Black, autoreset = False)
+    
+    
     while intro:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 pygame.quit()
                 
-        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         
         gameDisplay.fill(White)
         render_map(gameDisplay)
@@ -669,72 +708,42 @@ def bath(initial_x, initial_y, page):
         gameDisplay.blit(bubble1, (700, 500))
         gameDisplay.blit(bubble2, (260, 20))
         
-        if page ==1:            
-            TextSurf,  TextRect = text_objects("The GIT component of this course will allow for my research ", smalltext)
-            TextSurf1,  TextRect1 = text_objects("tools to be structured, stored and developed in a cohesive manner.", smalltext)
-            TextSurf2,  TextRect2 = text_objects("I often develop lengthy code, but have been unwilling ", smalltext)
-            TextSurf3,  TextRect3 = text_objects("to use GIT due to its perceived complexity. Now code ", smalltext)
-            TextSurf4,  TextRect4 = text_objects("can be safely backed up, and shared more easily  ", smalltext)
-            TextSurf5,  TextRect5 = text_objects("for collaboration. As I work on and develop the ISHMAEL code", smalltext)
-            TextSurf6,  TextRect6 = text_objects("it will be essential to have records that can be shared with ", smalltext)
-            TextSurf7,  TextRect7 = text_objects("its authors across the world. Most importantly it will ", smalltext)
-            TextSurf8,  TextRect8 = text_objects("protect against the main source of error, my own edits  ", smalltext)
-
-            
-            TextRect.center = (display_width/2, 210)
-            TextRect1.center = (display_width/2, 240)
-            TextRect2.center = (display_width/2, 270)
-            TextRect3.center = (display_width/2, 300)
-            TextRect4.center = (display_width/2, 330)
-            TextRect5.center = (display_width/2, 360)
-            TextRect6.center = (display_width/2, 390)
-            TextRect7.center = (display_width/2, 420)
-            TextRect8.center = (display_width/2, 450)
-            
-
-            
-            gameDisplay.blit(TextSurf, TextRect)
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect7)
-            gameDisplay.blit(TextSurf8, TextRect8)
-    
-
+        if page ==1:  
+            p1line1.draw(gameDisplay)
+            p1line1.update()
+            p1line2.draw(gameDisplay)
+            p1line2.update()
+            p1line3.draw(gameDisplay)
+            p1line3.update()
+            p1line4.draw(gameDisplay)
+            p1line4.update()
+            p1line5.draw(gameDisplay)
+            p1line5.update()
+            p1line6.draw(gameDisplay)
+            p1line6.update()
+            p1line7.draw(gameDisplay)
+            p1line7.update()
+            p1line8.draw(gameDisplay)
+            p1line8.update()
+            p1line9.draw(gameDisplay)
+            p1line9.update()
+            p1line10.draw(gameDisplay)
+            p1line10.update()
             nextpage("Next page", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 8)
         elif page==2:
-            TextSurf1,  TextRect1 = text_objects(" that break the code in ever more confusing ,", smalltext)
-            TextSurf2,  TextRect2 = text_objects(" and deceptive ways ", smalltext)
-            TextSurf3,  TextRect3 = text_objects(" ", smalltext)
-            TextSurf4,  TextRect4 = text_objects("Head to the mirror to 'reflect' on this presentation!", smalltext)
-            TextSurf5,  TextRect5 = text_objects("" , smalltext)
-            TextSurf6,  TextRect6= text_objects("", smalltext)
-
-
-    
-            TextRect1.center = (display_width/2, 210)
-            TextRect2.center = (display_width/2, 240)
-            TextRect3.center = (display_width/2, 270)
-            TextRect4.center = (display_width/2, 300)
-            TextRect5.center = (display_width/2, 330)
-            TextRect6.center = (display_width/2, 360)
-
-
-
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
+            p2line1.draw(gameDisplay)
+            p2line1.update()
+            p2line2.draw(gameDisplay)
+            p2line2.update()
+            p2line3.draw(gameDisplay)
+            p2line3.update()
+            p2line4.draw(gameDisplay)
+            p2line4.update()
 
             return_button("Return to game", display_width/1.2, 500, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
    
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(55)
         
 def mirror(initial_x, initial_y, page):
     """ interaction with bathroom mirror """
@@ -748,90 +757,84 @@ def mirror(initial_x, initial_y, page):
     reflection = pygame.transform.scale(reflection, (int(64*10), int(64*10)))
     
     intro = True
+    #page 1
+    p1line1 = DynamicText(smalltext,"To recap (and reflect), the content delivered on this course", (50, 68), Black, autoreset = False)
+    p1line2 = DynamicText(smalltext,"will make for a much more efficient workflow. ", (50, 98), Black, autoreset = False)
+    p1line3 = DynamicText(smalltext, "My research seeks to understand how we can improve computational", (50, 158),Black, autoreset = False)
+    p1line4 = DynamicText(smalltext, "models of the riming process, by incorporating ice shape ", (50, 188),Black, autoreset = False)
+    p1line5 = DynamicText(smalltext, "WRF is used to simulate storm events, during which", (50, 248),Black, autoreset = False,)
+    p1line6 = DynamicText(smalltext,"microphysics schemes are compared and assessed to deduce their accuracy", (50, 278),Black, autoreset = False)
+    p1line7 = DynamicText(smalltext, "These simulations are impeded by a lack of compute resource ", (50, 308),Black, autoreset = False)
+    p1line8 = DynamicText(smalltext, "which will be resolved by splitting my research between two..." ,(50, 338),Black, autoreset = False)
+    
+    #page 2
+    p2line1 = DynamicText(smalltext,"...HPC facilities, and by utilising ARCHER2 to conduct the ", (50, 68), Black, autoreset = False)
+    p2line2 = DynamicText(smalltext,"most intensive simulations. Access to two facilities is", (50, 98), Black, autoreset = False)
+    p2line3 = DynamicText(smalltext,"crucial to accessing resources during downtime.", (50, 128), Black, autoreset = False)
+    p2line4 = DynamicText(smalltext, "Compiling and editing this code is difficult, but made easier ", (50, 188),Black, autoreset = False)
+    p2line5 = DynamicText(smalltext, "by increased knowledge of command-line tools. ", (50, 208),Black, autoreset = False)
+    p2line6 = DynamicText(smalltext, "Documenting edits to the source code is now possible with GIT", (50, 268),Black, autoreset = False,)
+    p2line7 = DynamicText(smalltext,"This allows for potentially catastrophic errors to be reverted and", (50, 298),Black, autoreset = False)
+    p2line8 = DynamicText(smalltext, "also simplifies international collaboration.", (50, 328),Black, autoreset = False)
+    p2line9 = DynamicText(smalltext, "which will be resolved by splitting my research between two" ,(50, 358),Black, autoreset = False)
+    
+    
     while intro:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 pygame.quit()
                 
-        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         
         gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(background, (0, 0))
         gameDisplay.blit(reflection, (300, 200))
-        if page ==1:            
-            TextSurf,  TextRect = text_objects("To recap (and reflect), the content delivered on this course ", smalltext)
-            TextSurf1,  TextRect1 = text_objects("will make for a much more efficient workflow. ", smalltext)
-            TextSurf2,  TextRect2 = text_objects("My research seeks to understand how we can improve computational ", smalltext)
-            TextSurf3,  TextRect3 = text_objects("models of the riming process, by incorporating ice shape", smalltext)
-            TextSurf4,  TextRect4 = text_objects("WRF is used to simulate storm events, during which ", smalltext)
-            TextSurf5,  TextRect5 = text_objects("microphysics schemes are compared and assessed", smalltext)
-            TextSurf6,  TextRect6 = text_objects("to deduce their accuracy", smalltext)
-            TextSurf7,  TextRect7 = text_objects("These simulations are impeded by a lack of compute resource", smalltext)
-            TextSurf8,  TextRect8 = text_objects("which will be resolved by splitting my research between two ", smalltext)
+        if page ==1:   
+            p1line1.draw(gameDisplay)
+            p1line1.update()
+            p1line2.draw(gameDisplay)
+            p1line2.update()
+            p1line3.draw(gameDisplay)
+            p1line3.update()
+            p1line4.draw(gameDisplay)
+            p1line4.update()
+            p1line5.draw(gameDisplay)
+            p1line5.update()
+            p1line6.draw(gameDisplay)
+            p1line6.update()
+            p1line7.draw(gameDisplay)
+            p1line7.update()
+            p1line8.draw(gameDisplay)
+            p1line8.update()
 
-            
-            TextRect.center = (display_width/2, 210)
-            TextRect1.center = (display_width/2, 240)
-            TextRect2.center = (display_width/2, 270)
-            TextRect3.center = (display_width/2, 300)
-            TextRect4.center = (display_width/2, 330)
-            TextRect5.center = (display_width/2, 360)
-            TextRect6.center = (display_width/2, 390)
-            TextRect7.center = (display_width/2, 420)
-            TextRect8.center = (display_width/2, 450)
-            
 
-            
-            gameDisplay.blit(TextSurf, TextRect)
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect7)
-            gameDisplay.blit(TextSurf8, TextRect8)
-    
 
             nextpage("Next page", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 9)
         elif page==2:
-            TextSurf1,  TextRect1 = text_objects("HPC facilities, and by utilising ARCHER2 to conduct the ", smalltext)
-            TextSurf2,  TextRect2 = text_objects(" most intensive simulations. Access to two facilities is ", smalltext)
-            TextSurf3,  TextRect3 = text_objects("crucial to accessing resources during downtime. ", smalltext)
-            TextSurf4,  TextRect4 = text_objects("Compiling and editing this code is difficult, but made easier ", smalltext)
-            TextSurf5,  TextRect5 = text_objects("by increased knowledge of command-line tools, " , smalltext)
-            TextSurf6,  TextRect6= text_objects("Documenting edits to the source code is now possible with GIT", smalltext)
-            TextSurf7,  TextRect7= text_objects("This allows for potentially catastrophic errors to be reverted, and", smalltext)
-            TextSurf8,  TextRect8= text_objects("also simplifies international collaboration.", smalltext)
-
-
-    
-            TextRect1.center = (display_width/2, 210)
-            TextRect2.center = (display_width/2, 240)
-            TextRect3.center = (display_width/2, 270)
-            TextRect4.center = (display_width/2, 300)
-            TextRect5.center = (display_width/2, 330)
-            TextRect6.center = (display_width/2, 360)
-            TextRect7.center = (display_width/2, 390)
-            TextRect8.center = (display_width/2, 420)
-
-
-
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect7)
-            gameDisplay.blit(TextSurf8, TextRect8)
+            p2line1.draw(gameDisplay)
+            p2line1.update()
+            p2line2.draw(gameDisplay)
+            p2line2.update()
+            p2line3.draw(gameDisplay)
+            p2line3.update()
+            p2line4.draw(gameDisplay)
+            p2line4.update()
+            p2line5.draw(gameDisplay)
+            p2line5.update()
+            p2line6.draw(gameDisplay)
+            p2line6.update()
+            p2line7.draw(gameDisplay)
+            p2line7.update()
+            p2line8.draw(gameDisplay)
+            p2line8.update()
+            p2line9.draw(gameDisplay)
+            p2line9.update()
 
             return_button("Return to game", display_width/1.2, 500, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
    
  
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(55)
         
 def globe(initial_x, initial_y, page):
     """ interaction with bathroom mirror """
@@ -841,10 +844,33 @@ def globe(initial_x, initial_y, page):
     background=background.convert()
     background=pygame.transform.scale(background, (display_width, display_height))
     
-    reflection = pygame.image.load("../data/images/screens/mirror/player_transparent.png").convert_alpha()
-    reflection = pygame.transform.scale(reflection, (int(64*10), int(64*10)))
+    box=pygame.image.load("../data/flooring/white_transparent.png").convert_alpha()
+    box1=pygame.transform.scale(box, (650, 460))
     
     intro = True
+    #Page 1
+    p1line1 = DynamicText(smalltext,"No computer in the world is powerful enough to simulate", (110, 68), Black, autoreset = False)
+    p1line2 = DynamicText(smalltext,"even a few cubic metres of cloud particles. To scale ", (110, 98), Black, autoreset = False)
+    p1line3 = DynamicText(smalltext, "the cloud, models employ parametrisations that broadly", (110, 158),Black, autoreset = False)
+    p1line4 = DynamicText(smalltext, "capture qualities of the particle population and portion ", (110, 188),Black, autoreset = False)
+    p1line5 = DynamicText(smalltext, "the particle size distribution into bins. Each size", (110, 218),Black, autoreset = False,)
+    p1line6 = DynamicText(smalltext,"range can be operated on as one, with particle", (110, 248),Black, autoreset = False)
+    p1line7 = DynamicText(smalltext, "interactions determining the new size distribution at ", (110, 278),Black, autoreset = False)
+    p1line8 = DynamicText(smalltext, "the end of the time step " ,(110, 308),Black, autoreset = False)
+    p1line9 = DynamicText(smalltext, "A weather model employs a microphysics scheme to " ,(110, 368),Black, autoreset = False)
+    p1line10 = DynamicText(smalltext,"calculate the changing distribution but these schemes  " ,(110, 398),Black, autoreset = False)
+    p1line11= DynamicText(smalltext,"vary in the qualities they record. Ice shape has often" ,(110, 428),Black, autoreset = False)
+    p1line12= DynamicText(smalltext, " not been properly accounted for due...", (110, 458),Black, autoreset = False)                  
+    #Page 2
+    p2line1 = DynamicText(smalltext,"...to its complexity, but advances in computational power ", (110, 128), Black, autoreset = False)
+    p2line2 = DynamicText(smalltext,"have provided an opportunity to more efficiently ", (110, 158), Black, autoreset = False)
+    p2line3 = DynamicText(smalltext,"represent the shape of ice. Now the ISHMAEL microphysics", (110, 188), Black, autoreset = False)
+    p2line4 = DynamicText(smalltext, " scheme  offers a unique opportunity to investigate the ", (110, 218),Black, autoreset = False)
+    p2line5 = DynamicText(smalltext, "effects of riming. ", (110, 248),Black, autoreset = False)
+    p2line6 = DynamicText(smalltext, "Go to the Pool table to learn more about cloud ", (110, 408),Black, autoreset = False,)
+    p2line7 = DynamicText(smalltext, "particle collisions", (110, 438),Black, autoreset = False,)
+
+    
     while intro:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
@@ -855,82 +881,57 @@ def globe(initial_x, initial_y, page):
         gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(background, (0, 0))
+        gameDisplay.blit(box1, (100,60))
         
-        if page ==1:            
-            TextSurf,  TextRect = text_objects("No computer in the world is powerful enough to simulate", smalltext)
-            TextSurf1,  TextRect1 = text_objects("even a few cubic metres of cloud particles. To scale", smalltext)
-            TextSurf2,  TextRect2 = text_objects("the cloud, models employ parametrisations that broadly ", smalltext)
-            TextSurf3,  TextRect3 = text_objects("capture qualities of the particle population and portion", smalltext)
-            TextSurf4,  TextRect4 = text_objects("the particle size distribution into bins. Each size", smalltext)
-            TextSurf5,  TextRect5 = text_objects("range can be operated on as one, with particle", smalltext)
-            TextSurf6,  TextRect6 = text_objects("interactions determining the new size distribution at", smalltext)
-            TextSurf7,  TextRect7 = text_objects("the end of the time step. A weather model employs a ", smalltext)
-            TextSurf8,  TextRect8 = text_objects("microphysics scheme to calculate the changing distribution", smalltext)
-            TextSurf9,  TextRect9 = text_objects("but these schemes vary in the qualities they record", smalltext)
-            TextSurf10,  TextRect10 = text_objects("Ice shape has often not been properly accounted for due", smalltext)
-            TextSurf11,  TextRect11 = text_objects("to its complexity, but advances in computational power", smalltext)
-            
-            TextRect.center = (display_width/2, 120)
-            TextRect1.center = (display_width/2, 150)
-            TextRect2.center = (display_width/2, 180)
-            TextRect3.center = (display_width/2, 210)
-            TextRect4.center = (display_width/2, 240)
-            TextRect5.center = (display_width/2, 270)
-            TextRect6.center = (display_width/2, 300)
-            TextRect7.center = (display_width/2, 330)
-            TextRect8.center = (display_width/2, 360)
-            TextRect9.center = (display_width/2, 390)
-            TextRect10.center = (display_width/2, 420)
-            TextRect11.center = (display_width/2, 450)
-
-            
-            gameDisplay.blit(TextSurf, TextRect)
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect7)
-            gameDisplay.blit(TextSurf8, TextRect8)
-            gameDisplay.blit(TextSurf9, TextRect9)
-            gameDisplay.blit(TextSurf10, TextRect10)
-            gameDisplay.blit(TextSurf11, TextRect11)
+        if page ==1:   
+            p1line1.draw(gameDisplay)
+            p1line1.update()
+            p1line2.draw(gameDisplay)
+            p1line2.update()
+            p1line3.draw(gameDisplay)
+            p1line3.update()
+            p1line4.draw(gameDisplay)
+            p1line4.update()
+            p1line5.draw(gameDisplay)
+            p1line5.update()
+            p1line6.draw(gameDisplay)
+            p1line6.update()
+            p1line7.draw(gameDisplay)
+            p1line7.update()
+            p1line8.draw(gameDisplay)
+            p1line8.update()
+            p1line9.draw(gameDisplay)
+            p1line9.update()
+            p1line10.draw(gameDisplay)
+            p1line10.update()
+            p1line11.draw(gameDisplay)
+            p1line11.update()
+            p1line12.draw(gameDisplay)
+            p1line12.update()
 
             nextpage("Next page", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 3)
         elif page==2:
-            TextSurf,  TextRect = text_objects("have provided an opportunity to more efficiently represent ", smalltext)
-            TextSurf1,  TextRect1 = text_objects("the shape of ice. Now the ISHMAEL microphysics scheme ", smalltext)
-            TextSurf2,  TextRect2 = text_objects("offers a unique opportunity to investigate the effects ", smalltext)
-            TextSurf3,  TextRect3 = text_objects("of riming.", smalltext)
-            TextSurf4,  TextRect4 = text_objects("", smalltext)
-            TextSurf5,  TextRect5 = text_objects("Go to the Pool table to learn more about particle collisions", smalltext)
+            p2line1.draw(gameDisplay)
+            p2line1.update()
+            p2line2.draw(gameDisplay)
+            p2line2.update()
+            p2line3.draw(gameDisplay)
+            p2line3.update()
+            p2line4.draw(gameDisplay)
+            p2line4.update()
+            p2line5.draw(gameDisplay)
+            p2line5.update()
+            p2line6.draw(gameDisplay)
+            p2line6.update()
+            p2line7.draw(gameDisplay)
+            p2line7.update()
 
-            
-            TextRect.center = (display_width/2, 120)
-            TextRect1.center = (display_width/2, 150)
-            TextRect2.center = (display_width/2, 180)
-            TextRect3.center = (display_width/2, 210)
-            TextRect4.center = (display_width/2, 240)
-            TextRect5.center = (display_width/2, 270)
- 
 
-            
-            gameDisplay.blit(TextSurf, TextRect)
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
 
             return_button("Return to game", display_width/1.2, 500, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
-            
-        # gameDisplay.blit(reflection, (300, 200))
-        # gameDisplay.blit(TextSurf, TextRect)
-        #button(message, x, y, w, h, inactive, active, returnposx, returnposy)
         
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(55)
 
 def desk(initial_x, initial_y, page):
     """ interaction with desk """
@@ -947,87 +948,88 @@ def desk(initial_x, initial_y, page):
     pencil=pygame.transform.rotate(pencil,190)
     
     intro = True
+    #Page 1
+    p1line1 = DynamicText(smalltext,"The BASH component of this course has ", (20, 68), Black, autoreset = False)
+    p1line2 = DynamicText(smalltext,"provided new tools for file handling,", (20, 98), Black, autoreset = False)
+    p1line3 = DynamicText(smalltext, "that will allow for more efficient", (20, 128),Black, autoreset = False)
+    p1line4 = DynamicText(smalltext, "workflows, and increased confidence ", (20, 158),Black, autoreset = False)
+    p1line5 = DynamicText(smalltext, "on the command line.  ", (20, 188),Black, autoreset = False,)
+    p1line6 = DynamicText(smalltext," Compiling WRF and making amendments to its source", (20, 248),Black, autoreset = False)
+    p1line7 = DynamicText(smalltext, "code can be a lengthy and stressful process. ", (20, 278),Black, autoreset = False)
+    p1line8 = DynamicText(smalltext, "The addition of new commands, and correct use of " ,(20, 308),Black, autoreset = False)
+    p1line9 = DynamicText(smalltext, " environmental variables in particular, will be integral  " ,(20, 368),Black, autoreset = False)
+    p1line10 = DynamicText(smalltext, "to resolving virtual...", (20, 398),Black, autoreset = False)
+    #Page 2
+    p2line1 = DynamicText(smalltext,"...environment issues.  ", (20, 68), Black, autoreset = False)
+    p2line2 = DynamicText(smalltext,"Interacting with system files is inefficient in ", (20, 128), Black, autoreset = False)
+    p2line3 = DynamicText(smalltext,"my preferred language of python.", (20, 158), Black, autoreset = False)
+    p2line4 = DynamicText(smalltext, "BASH naturally lends itself to file", (20, 188),Black, autoreset = False)
+    p2line5 = DynamicText(smalltext, "handling, and will reduce the amount of time wasted ", (20, 218),Black, autoreset = False)
+    p2line6 = DynamicText(smalltext, "manually  editing text files. ", (20, 248),Black, autoreset = False)
+    p2line7 = DynamicText(smalltext,  "Simple scripts utilising for and if loops can be", (20, 308),Black, autoreset = False,)
+    p2line8 = DynamicText(smalltext, " built to reduce manual file handling tasks.", (20, 338),Black, autoreset = False)
+    p2line9 = DynamicText(smalltext, "Head to the bath for more information on GIT ", (20, 408),Black, autoreset = False)
+
+    
     while intro:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 pygame.quit()
                 
-        largeText=pygame.font.Font('../data/fonts/Eight-Bit_Madness.ttf', 80)
         
         gameDisplay.fill(White)
         render_map(gameDisplay)
         gameDisplay.blit(background, (0, 0))
         gameDisplay.blit(book, (570, -100))
         gameDisplay.blit(pencil, (-150, 400))
-        if page ==1:            
-            TextSurf,  TextRect = text_objects("The BASH component of this course has  ", smalltext)
-            TextSurf1,  TextRect1 = text_objects("provided new tools for file handling, ", smalltext)
-            TextSurf2,  TextRect2 = text_objects("that will allow for more efficient", smalltext)
-            TextSurf3,  TextRect3 = text_objects("workflows, and increased confidence", smalltext)
-            TextSurf4,  TextRect4 = text_objects(" on the command line.  Compiling WRF,", smalltext)
-            TextSurf5,  TextRect5 = text_objects(" and making amendments to its source", smalltext)
-            TextSurf6,  TextRect6 = text_objects("code can be a lengthy and stressful process.", smalltext)
-            TextSurf7,  TextRect7 = text_objects("The addition of new commands, and information on environmental .", smalltext)
-            TextSurf8,  TextRect8 = text_objects("variables in particular, will be integral to resolving virtual", smalltext)
-
-            
-            TextRect.center = (display_width/2-100, 210)
-            TextRect1.center = (display_width/2-100, 240)
-            TextRect2.center = (display_width/2-100, 270)
-            TextRect3.center = (display_width/2-100, 300)
-            TextRect4.center = (display_width/2, 330)
-            TextRect5.center = (display_width/2, 360)
-            TextRect6.center = (display_width/2, 390)
-            TextRect7.center = (display_width/2, 420)
-            TextRect8.center = (display_width/2, 450)
-            
-
-            
-            gameDisplay.blit(TextSurf, TextRect)
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect7)
-            gameDisplay.blit(TextSurf8, TextRect8)
+        if page ==1:
+            p1line1.draw(gameDisplay)
+            p1line1.update()
+            p1line2.draw(gameDisplay)
+            p1line2.update()
+            p1line3.draw(gameDisplay)
+            p1line3.update()
+            p1line4.draw(gameDisplay)
+            p1line4.update()
+            p1line5.draw(gameDisplay)
+            p1line5.update()
+            p1line6.draw(gameDisplay)
+            p1line6.update()
+            p1line7.draw(gameDisplay)
+            p1line7.update()
+            p1line8.draw(gameDisplay)
+            p1line8.update()
+            p1line9.draw(gameDisplay)
+            p1line9.update()
+            p1line10.draw(gameDisplay)
+            p1line10.update()
     
 
             nextpage("Next page", display_width/1.2, 550, 100, 50, Brown, Bright_green, initial_x, initial_y, 7)
         elif page==2:
-            TextSurf1,  TextRect1 = text_objects(" environment issues Interacting with system ", smalltext)
-            TextSurf2,  TextRect2 = text_objects(" files is inefficient in my preferred language ", smalltext)
-            TextSurf3,  TextRect3 = text_objects(" of python. BASH naturally lends itself to file", smalltext)
-            TextSurf4,  TextRect4 = text_objects(" handling, and will reduce the amount of time wasted ", smalltext)
-            TextSurf5,  TextRect5 = text_objects("manually  editing text files. Simple scripts can be built " , smalltext)
-            TextSurf6,  TextRect6= text_objects("for otherwise laborious manual tasks.", smalltext)
-            TextSurf7,  TextRect7= text_objects("Head to the bath for more information on GIT", smalltext)
-
-
-    
-            TextRect1.center = (display_width/2-100, 210)
-            TextRect2.center = (display_width/2-100, 240)
-            TextRect3.center = (display_width/2-100, 270)
-            TextRect4.center = (display_width/2-100, 300)
-            TextRect5.center = (display_width/2, 330)
-            TextRect6.center = (display_width/2, 360)
-            TextRect7.center = (display_width/2, 390)
-
-
-
-            gameDisplay.blit(TextSurf1, TextRect1)
-            gameDisplay.blit(TextSurf2, TextRect2)
-            gameDisplay.blit(TextSurf3, TextRect3)
-            gameDisplay.blit(TextSurf4, TextRect4)
-            gameDisplay.blit(TextSurf5, TextRect5)
-            gameDisplay.blit(TextSurf6, TextRect6)
-            gameDisplay.blit(TextSurf7, TextRect6)
+            p2line1.draw(gameDisplay)
+            p2line1.update()
+            p2line2.draw(gameDisplay)
+            p2line2.update()
+            p2line3.draw(gameDisplay)
+            p2line3.update()
+            p2line4.draw(gameDisplay)
+            p2line4.update()
+            p2line5.draw(gameDisplay)
+            p2line5.update()
+            p2line6.draw(gameDisplay)
+            p2line6.update()
+            p2line7.draw(gameDisplay)
+            p2line7.update()
+            p2line8.draw(gameDisplay)
+            p2line8.update()
+            p2line9.draw(gameDisplay)
+            p2line9.update()
 
             return_button("Return to game", display_width/1.2, 500, 100, 50, Brown, Bright_green, initial_x, initial_y, 0)
    
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(55)
 
 def render_map(screen):
         # determine_camera(hero)
