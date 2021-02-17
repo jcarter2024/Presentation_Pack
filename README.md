@@ -13,8 +13,8 @@ python3 -m pip install -U pygame --user
 
 Step 2: Clone this directory to your machine, using git clone
 
-Step 3: Run the main script with python using relative path to your current directory
-python3 scripts/main.py
+Step 3: Change into the scripts/ directory and run the main script with python:
+python3 main.py
 
 A window should open, with the game playing. Enjoy!!
 
