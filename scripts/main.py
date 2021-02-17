@@ -18,7 +18,7 @@ except ImportError:
     
 pygame.init()
 #print(pygame.font.get_fonts())
-pygame.mixer.music.load("../data/jazz.mp3")
+pygame.mixer.music.load("../data/jazz.wav")
 # display_width = 640 
 # display_height = 480   
 display_width = 800 
