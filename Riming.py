@@ -41,7 +41,7 @@ vert4.append([vector(d,-d,-d), vector(d,d,-d)])
 ice_length = 0.5/2
 ice_width = 0.5/2
 ice_height = 0.1/2
-ice=ellipsoid(pos=vector(0,0,0),length=ice_length, height=ice_height, width=ice_width, color=color=color.cyan, make_trail=True, retain=10, trail_radius=0.1, opacity=0.2)
+ice=ellipsoid(pos=vector(0,0,0),length=ice_length, height=ice_height, width=ice_width, color=color.cyan, make_trail=True, retain=10, trail_radius=0.1, opacity=0.2)
 
 Atoms = []
 p = [] #momentum 
