@@ -18,3 +18,6 @@ python3 main.py
 
 A window should open, with the game playing. Enjoy!!
 
+To run the riming simulation without a glowscript account visit:
+https://glowscript.org/#/user/jjcarter/folder/MyPrograms/program/Riming
+
