@@ -1,4 +1,4 @@
-GlowScript 3.0 VPython
+from vpython import *
 win = 1000
 
 # Typical values
